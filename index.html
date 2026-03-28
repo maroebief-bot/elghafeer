@@ -3,126 +3,269 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>الغفير — أمان وراحة نفسية</title>
-  <link rel="stylesheet" href="style.css">
+  <title>الغفير — لوحة التحكم</title>
+  <link rel="stylesheet" href="../style.css">
   <style>
-    body { background: #fff; }
-    .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 40px 24px;
-      background: linear-gradient(160deg, #fff 60%, #f8f5ee 100%);
-      position: relative; overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image:
-        radial-gradient(circle at 10% 10%, rgba(201,168,76,0.07) 0%, transparent 50%),
-        radial-gradient(circle at 90% 90%, rgba(138,154,176,0.06) 0%, transparent 50%);
-      pointer-events: none;
-    }
-    .logo-wrap {
-      width: 160px; height: 160px; margin-bottom: 24px;
-      filter: drop-shadow(0 8px 24px rgba(201,168,76,0.25));
-      animation: float 3s ease-in-out infinite;
-    }
-    .logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
-    .main-title {
-      font-size: 52px; font-weight: 900; color: var(--gold-d);
-      letter-spacing: 2px; margin-bottom: 6px;
-    }
-    .main-sub { font-size: 16px; color: var(--text3); margin-bottom: 32px; }
-    .btn-group { width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 12px; }
-    .btn-hero {
-      display: flex; align-items: center; justify-content: center; gap: 12px;
-      padding: 18px 32px; border-radius: 14px;
-      font-family: 'Tajawal', sans-serif; font-size: 18px; font-weight: 700;
-      cursor: pointer; text-decoration: none; border: none;
-      transition: all 0.25s;
-    }
-    .btn-hero-gold {
-      background: linear-gradient(135deg, var(--gold), var(--gold-d));
-      color: #fff; box-shadow: 0 4px 20px rgba(201,168,76,0.3);
-    }
-    .btn-hero-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,0.4); }
-    .btn-hero-silver {
-      background: #fff; color: var(--gold-d);
-      border: 2px solid var(--gold);
-    }
-    .btn-hero-silver:hover { background: rgba(201,168,76,0.05); transform: translateY(-2px); }
-    .btn-hero-admin {
-      background: var(--bg3); color: var(--text3);
-      border: 1px solid var(--border); font-size: 15px;
-    }
-    .features {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px; width: 100%; max-width: 380px;
-      margin: 32px 0 20px;
-    }
-    .feat {
-      background: #fff; border: 1px solid var(--border);
-      border-radius: 14px; padding: 16px 12px; text-align: center;
-      box-shadow: var(--shadow); transition: all 0.2s;
-    }
-    .feat:hover { border-color: var(--gold); box-shadow: var(--shadow-g); }
-    .feat-icon { font-size: 24px; margin-bottom: 6px; }
-    .feat-name { font-size: 13px; font-weight: 700; color: var(--gold-d); }
-    .feat-desc { font-size: 11px; color: var(--text3); margin-top: 3px; }
-    .stats-bar {
-      display: flex; gap: 24px; margin-bottom: 28px;
-    }
-    .sbar { text-align: center; }
-    .sbar-num { font-size: 26px; font-weight: 900; color: var(--gold-d); }
-    .sbar-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
-    .footer-txt { font-size: 12px; color: var(--text3); margin-top: 16px; }
-    .footer-txt span { color: var(--gold-d); font-weight: 700; }
+    body{background:#f8f9fb;}
+    .admin-login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#f8f5ee 0%,#fff 100%);}
+    #admin-panel{display:none;}
+    .top-bar{background:#fff;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);position:sticky;top:0;z-index:100;}
+    .sys-status{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--green);}
+    .main{max-width:900px;margin:0 auto;padding:20px;}
+    .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;}
+    @media(min-width:600px){.stats-grid{grid-template-columns:repeat(4,1fr);}}
+    .tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;}
+    .tab{padding:10px 16px;border-radius:10px;border:1.5px solid var(--border);background:#fff;color:var(--text3);cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;white-space:nowrap;transition:all 0.2s;box-shadow:var(--shadow);}
+    .tab.active{background:var(--gold);color:#fff;border-color:var(--gold);}
+    .tcontent{display:none;}
+    .tcontent.active{display:block;}
+    .item-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;box-shadow:var(--shadow);}
+    .iheader{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+    .iactions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+    .act-btn{padding:7px 14px;border-radius:8px;border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;transition:all 0.2s;}
+    .act-ok{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+    .act-ok:hover{background:#16a34a;color:#fff;}
+    .act-rej{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;}
+    .act-rej:hover{background:#dc2626;color:#fff;}
+    .act-call{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
+    .act-call:hover{background:var(--gold);color:#fff;}
+    .act-ban{background:var(--bg3);color:var(--text3);border:1px solid var(--border);}
+    .ptt-panel{background:#fff;border:1.5px solid var(--border-g);border-radius:var(--radius);padding:20px;margin-bottom:16px;text-align:center;box-shadow:var(--shadow-g);}
+    .ptt-big{width:76px;height:76px;border-radius:50%;border:3px solid var(--gold);background:#fff;color:var(--gold-d);font-size:28px;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;justify-content:center;margin:12px auto;box-shadow:var(--shadow-g);user-select:none;}
+    .ptt-big.active{background:var(--gold);color:#fff;box-shadow:0 0 24px rgba(201,168,76,0.4);}
+    .sos-alert{background:#fef2f2;border:2px solid #fca5a5;border-radius:var(--radius);padding:16px;margin-bottom:10px;}
+    .search-bar{width:100%;padding:11px 14px;background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'Tajawal',sans-serif;font-size:14px;outline:none;margin-bottom:12px;direction:rtl;}
+    .search-bar:focus{border-color:var(--gold);}
+    .empty{text-align:center;padding:32px;color:var(--text3);font-size:14px;}
+    .logout-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:8px 16px;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;}
   </style>
 </head>
 <body>
-  <div id="loader">
-    <img src="logo.png" class="loader-logo" alt="الغفير">
-    <div class="loader-bar"><div class="loader-fill"></div></div>
-    <div class="loader-txt">جاري تشغيل منظومة الغفير...</div>
+  <div class="notif" id="notif"></div>
+
+  <!-- LOGIN -->
+  <div class="admin-login" id="admin-login">
+    <div style="width:100%;max-width:360px;">
+      <div style="text-align:center;margin-bottom:28px;">
+        <img src="../logo.png" style="width:90px;margin-bottom:14px;">
+        <div style="font-size:22px;font-weight:900;color:var(--gold-d);">🔐 لوحة التحكم</div>
+        <div style="font-size:13px;color:var(--text3);margin-top:4px;">الغفير — الإدارة المركزية</div>
+      </div>
+      <div class="card-gold">
+        <div class="input-group"><label class="input-label">اسم المستخدم</label><input class="input-field" type="text" id="admin-user" placeholder="admin"></div>
+        <div class="input-group"><label class="input-label">كلمة المرور</label><input class="input-field" type="password" id="admin-pass" placeholder="••••••••"></div>
+        <button class="btn btn-gold" onclick="adminLogin()">🔑 دخول</button>
+      </div>
+    </div>
   </div>
 
-  <div class="hero">
-    <div class="logo-wrap"><img src="logo.png" alt="الغفير"></div>
-    <div class="main-title">الغفير</div>
-    <div class="main-sub">أمان وراحة نفسية</div>
-
-    <div class="stats-bar">
-      <div class="sbar"><div class="sbar-num">٢٤/٧</div><div class="sbar-label">مراقبة</div></div>
-      <div class="sbar"><div class="sbar-num">١٠٠٪</div><div class="sbar-label">معتمدين</div></div>
-      <div class="sbar"><div class="sbar-num">٠ جنيه</div><div class="sbar-label">تسجيل</div></div>
+  <!-- PANEL -->
+  <div id="admin-panel">
+    <div class="top-bar">
+      <div class="sys-status"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);animation:dblink 1s infinite;"></div>النظام يعمل</div>
+      <div style="display:flex;align-items:center;gap:8px;"><img src="../logo.png" style="width:28px;"><span style="font-size:16px;font-weight:900;color:var(--gold-d);">الغفير — الإدارة</span></div>
+      <button class="logout-btn" onclick="location.reload()">خروج</button>
     </div>
+    <div class="main">
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-num" id="st-approved">0</div><div class="stat-label">🛺 سائقين معتمدين</div></div>
+        <div class="stat-card"><div class="stat-num" id="st-online">0</div><div class="stat-label">🟢 متاحين الآن</div></div>
+        <div class="stat-card"><div class="stat-num" id="st-rides">0</div><div class="stat-label">🚗 رحلات اليوم</div></div>
+        <div class="stat-card"><div class="stat-num" id="st-pending">0</div><div class="stat-label">⏳ طلبات انتظار</div></div>
+      </div>
+      <!-- PTT BROADCAST -->
+      <div class="ptt-panel">
+        <div style="font-size:15px;font-weight:700;color:var(--gold-d);margin-bottom:4px;">📢 البث العام للسائقين</div>
+        <div style="font-size:13px;color:var(--text3);" id="ptt-status">اضغط للبث على كل السائقين المتاحين</div>
+        <button class="ptt-big" id="ptt-big" onmousedown="bcastStart()" onmouseup="bcastStop()" ontouchstart="bcastStart(event)" ontouchend="bcastStop()">📢</button>
+        <div style="font-size:12px;color:var(--text3);">اضغط مع الاستمرار للبث</div>
+      </div>
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab active" onclick="switchT('tc-pending',this)">⏳ طلبات تسجيل</button>
+        <button class="tab" onclick="switchT('tc-drivers',this)">🛺 السائقين</button>
+        <button class="tab" onclick="switchT('tc-rides',this)">🚗 الرحلات</button>
+        <button class="tab" onclick="switchT('tc-sos',this)">🚨 طوارئ SOS</button>
+        <button class="tab" onclick="switchT('tc-clients',this)">🧑 العملاء</button>
+      </div>
 
-    <div class="btn-group">
-      <a href="client/signup.html" class="btn-hero btn-hero-gold">🧑 أنا عميل — سجل أو دخول</a>
-      <a href="driver/signup.html" class="btn-hero btn-hero-silver">🛺 أنا سائق — سجل أو دخول</a>
-      <a href="admin/index.html" class="btn-hero btn-hero-admin">🔐 لوحة تحكم الإدارة</a>
+      <div class="tcontent active" id="tc-pending">
+        <input class="search-bar" placeholder="🔍 بحث عن سائق..." oninput="filterD(this.value,'pending')">
+        <div id="list-pending"><div class="empty">جاري التحميل...</div></div>
+      </div>
+      <div class="tcontent" id="tc-drivers">
+        <input class="search-bar" placeholder="🔍 بحث..." oninput="filterD(this.value,'approved')">
+        <div id="list-drivers"><div class="empty">جاري التحميل...</div></div>
+      </div>
+      <div class="tcontent" id="tc-rides"><div id="list-rides"><div class="empty">جاري التحميل...</div></div></div>
+      <div class="tcontent" id="tc-sos"><div id="list-sos"><div class="empty">لا توجد حالات طوارئ 🟢</div></div></div>
+      <div class="tcontent" id="tc-clients"><div id="list-clients"><div class="empty">جاري التحميل...</div></div></div>
     </div>
-
-    <div class="features">
-      <div class="feat"><div class="feat-icon">📍</div><div class="feat-name">تتبع مباشر</div><div class="feat-desc">لحظة بلحظة</div></div>
-      <div class="feat"><div class="feat-icon">🔐</div><div class="feat-name">QR تشغيل</div><div class="feat-desc">بداية آمنة</div></div>
-      <div class="feat"><div class="feat-icon">👨‍👩‍👧</div><div class="feat-name">نظام العائلة</div><div class="feat-desc">متابعة ولي الأمر</div></div>
-      <div class="feat"><div class="feat-icon">🚨</div><div class="feat-name">زر SOS</div><div class="feat-desc">طوارئ فورية</div></div>
-      <div class="feat"><div class="feat-icon">🎙️</div><div class="feat-name">واكي توكي</div><div class="feat-desc">تواصل مباشر</div></div>
-      <div class="feat"><div class="feat-icon">⭐</div><div class="feat-name">تقييم</div><div class="feat-desc">جودة مضمونة</div></div>
-    </div>
-
-    <div class="footer-txt">جميع الحقوق محفوظة © ٢٠٢٦ <span>الغفير</span></div>
   </div>
 
-  <script>
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        const l = document.getElementById('loader');
-        l.style.opacity = '0'; l.style.visibility = 'hidden';
-      }, 2200);
-    });
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, doc, updateDoc, onSnapshot, serverTimestamp }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const app=initializeApp({apiKey:"AIzaSyBwc1mp1NRakXfeSkDy4_ntHu38K5L1hIg",authDomain:"elghafeer-28543.firebaseapp.com",projectId:"elghafeer-28543",storageBucket:"elghafeer-28543.firebasestorage.app",messagingSenderId:"862588981889",appId:"1:862588981889:web:36f5cfc3d1e9bcd8289f90"});
+    const db=getFirestore(app);
+    let allDrivers=[],allRides=[],allClients=[],bRec=null;
+
+    window.adminLogin=()=>{
+      const u=document.getElementById('admin-user').value;
+      const p=document.getElementById('admin-pass').value;
+      if(u==='admin'&&p==='ghafeer2026'){
+        document.getElementById('admin-login').style.display='none';
+        document.getElementById('admin-panel').style.display='block';
+        loadAll(); notif('✅ أهلاً بك في لوحة التحكم','success');
+      } else notif('بيانات خاطئة','error');
+    };
+
+    function loadAll(){loadDrivers();loadRides();loadSOS();loadClients();}
+
+    function loadDrivers(){
+      onSnapshot(collection(db,'drivers'),snap=>{
+        allDrivers=snap.docs.map(d=>({id:d.id,...d.data()}));
+        const pending=allDrivers.filter(d=>d.status==='pending');
+        const approved=allDrivers.filter(d=>d.status==='approved');
+        document.getElementById('st-approved').textContent=approved.length;
+        document.getElementById('st-online').textContent=approved.filter(d=>d.isOnline).length;
+        document.getElementById('st-pending').textContent=pending.length;
+        renderDrivers('list-pending',pending,true);
+        renderDrivers('list-drivers',approved,false);
+      });
+    }
+
+    function renderDrivers(listId,drivers,showApprove){
+      const el=document.getElementById(listId);
+      if(!drivers.length){el.innerHTML='<div class="empty">لا يوجد سائقين</div>';return;}
+      el.innerHTML=drivers.map(d=>`
+        <div class="item-card">
+          <div class="iheader">
+            <div class="avatar">${d.photoURL?`<img src="${d.photoURL}">`:'🛺'}</div>
+            <div style="flex:1;">
+              <div style="font-size:15px;font-weight:700;color:var(--gold-d);">${d.name||'بدون اسم'}</div>
+              <div style="font-size:12px;color:var(--text3);">${d.phone||''} ${d.plate?'| '+d.plate:''}</div>
+              <div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;">
+                <span class="badge ${d.status==='approved'?'b-approved':'b-pending'}">${d.status==='approved'?'✅ معتمد':'⏳ انتظار'}</span>
+                ${d.isOnline?'<span class="badge b-online">🟢 متاح</span>':''}
+              </div>
+            </div>
+            <div style="text-align:center;flex-shrink:0;">
+              <div style="font-size:20px;font-weight:900;color:var(--gold-d);">${d.workDays||0}</div>
+              <div style="font-size:10px;color:var(--text3);">يوم شغل</div>
+            </div>
+          </div>
+          <div class="iactions">
+            ${showApprove?`<button class="act-btn act-ok" onclick="approveD('${d.id}')">✅ اعتماد</button>`:''}
+            ${showApprove?`<button class="act-btn act-rej" onclick="rejectD('${d.id}')">❌ رفض</button>`:''}
+            <button class="act-btn act-call" onclick="callD('${d.id}','${d.name||'السائق'}')">📞 استدعاء</button>
+            ${!showApprove?`<button class="act-btn act-ban" onclick="banD('${d.id}')">🚫 إيقاف</button>`:''}
+          </div>
+        </div>`).join('');
+    }
+
+    window.filterD=(q,type)=>{
+      const status=type==='pending'?'pending':'approved';
+      const filtered=allDrivers.filter(d=>d.status===status&&((d.name||'').includes(q)||(d.phone||'').includes(q)));
+      renderDrivers(type==='pending'?'list-pending':'list-drivers',filtered,type==='pending');
+    };
+
+    window.approveD=async id=>{await updateDoc(doc(db,'drivers',id),{status:'approved',approvedAt:serverTimestamp()});notif('✅ تم اعتماد السائق','success');};
+    window.rejectD=async id=>{await updateDoc(doc(db,'drivers',id),{status:'rejected'});notif('تم رفض الطلب','info');};
+    window.banD=async id=>{await updateDoc(doc(db,'drivers',id),{status:'banned',isOnline:false});notif('🚫 تم إيقاف السائق','info');};
+    window.callD=async(id,name)=>{await updateDoc(doc(db,'drivers',id),{incomingCall:{from:'الإدارة المركزية',at:new Date().toISOString()}});notif('📞 تم استدعاء '+name,'success');};
+
+    function loadRides(){
+      onSnapshot(collection(db,'rides'),snap=>{
+        allRides=snap.docs.map(d=>({id:d.id,...d.data()}));
+        const today=new Date().toDateString();
+        const todayRides=allRides.filter(r=>r.createdAt?.toDate?.().toDateString()===today);
+        document.getElementById('st-rides').textContent=todayRides.length;
+        const el=document.getElementById('list-rides');
+        if(!allRides.length){el.innerHTML='<div class="empty">لا توجد رحلات</div>';return;}
+        el.innerHTML=allRides.slice().reverse().slice(0,30).map(r=>`
+          <div class="item-card">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:24px;">🚗</span>
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:700;color:var(--gold-d);">${r.from||'?'} ← ${r.to||'?'}</div>
+                <div style="font-size:12px;color:var(--text3);">${r.clientName||'عميل'} | ${r.createdAt?.toDate?.().toLocaleString('ar-EG')||'الآن'}</div>
+              </div>
+              <span class="badge ${r.status==='completed'?'b-approved':r.status==='in_ride'?'b-active':'b-pending'}">${stAr(r.status)}</span>
+            </div>
+          </div>`).join('');
+      });
+    }
+
+    function stAr(s){return{searching:'بحث',accepted:'قُبلت',driver_arrived:'السائق وصل',in_ride:'في الطريق',completed:'اكتملت',cancelled:'ملغاة',rejected:'مرفوضة'}[s]||s;}
+
+    function loadSOS(){
+      onSnapshot(collection(db,'sos'),snap=>{
+        const all=snap.docs.map(d=>({id:d.id,...d.data()}));
+        const el=document.getElementById('list-sos');
+        if(!all.length){el.innerHTML='<div class="empty">لا توجد حالات طوارئ 🟢</div>';return;}
+        el.innerHTML=all.slice().reverse().map(s=>`
+          <div class="sos-alert">
+            <div style="display:flex;gap:10px;margin-bottom:6px;">
+              <span style="font-size:22px;">🚨</span>
+              <div>
+                <div style="font-size:15px;font-weight:700;color:var(--red);">طوارئ — ${s.clientName||'عميل'}</div>
+                <div style="font-size:12px;color:var(--text3);">${s.createdAt?.toDate?.().toLocaleString('ar-EG')||'الآن'}</div>
+              </div>
+            </div>
+            <div style="font-size:13px;color:var(--text2);">📍 ${s.lat?.toFixed(4)||'?'}, ${s.lng?.toFixed(4)||'?'}</div>
+          </div>`).join('');
+      });
+    }
+
+    function loadClients(){
+      onSnapshot(collection(db,'clients'),snap=>{
+        const all=snap.docs.map(d=>({id:d.id,...d.data()}));
+        const el=document.getElementById('list-clients');
+        if(!all.length){el.innerHTML='<div class="empty">لا يوجد عملاء</div>';return;}
+        el.innerHTML=all.map(c=>`
+          <div class="item-card">
+            <div class="iheader">
+              <div class="avatar">🧑</div>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--gold-d);">${c.name||'عميل'}</div>
+                <div style="font-size:12px;color:var(--text3);">${c.phone||''}</div>
+                <span class="badge b-silver">${c.accountType==='family'?'👨‍👩‍👧 عائلي':'🧑 فردي'}</span>
+              </div>
+            </div>
+          </div>`).join('');
+      });
+    }
+
+    // PTT BROADCAST
+    window.bcastStart=async(e)=>{
+      if(e)e.preventDefault();
+      try{
+        const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+        bRec=new MediaRecorder(stream);bRec.start();
+        document.getElementById('ptt-big').classList.add('active');
+        document.getElementById('ptt-status').textContent='🔴 جاري البث...';
+        allDrivers.filter(d=>d.isOnline).forEach(async d=>await updateDoc(doc(db,'drivers',d.id),{incomingCall:{from:'البث العام - الإدارة',at:new Date().toISOString()}}));
+        notif('📢 جاري البث على كل السائقين','info');
+      }catch(e){notif('تعذر المايك','error');}
+    };
+    window.bcastStop=()=>{
+      if(bRec&&bRec.state!=='inactive'){bRec.stop();bRec.stream.getTracks().forEach(t=>t.stop());}
+      document.getElementById('ptt-big').classList.remove('active');
+      document.getElementById('ptt-status').textContent='اضغط للبث على كل السائقين المتاحين';
+    };
+
+    window.switchT=(id,btn)=>{
+      document.querySelectorAll('.tcontent').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    };
+    window.notif=(msg,type='info')=>{const n=document.getElementById('notif');n.textContent=msg;n.className=`notif notif-${type}`;n.style.display='block';setTimeout(()=>n.style.display='none',3000);};
+    const s=document.createElement('style');s.textContent='@keyframes dblink{0%,100%{opacity:1}50%{opacity:0.2}}';document.head.appendChild(s);
   </script>
 </body>
 </html>
