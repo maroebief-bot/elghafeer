@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>الغفير — السائق</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body{background:#f8f9fb;}
+    .top-nav{background:#fff;border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
+    .bottom-tabs{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:flex;z-index:100;box-shadow:0 -2px 12px rgba(0,0,0,0.06);}
+    .btab{flex:1;padding:10px 4px 12px;text-align:center;cursor:pointer;border:none;background:transparent;font-family:'Tajawal',sans-serif;}
+    .btab-icon{font-size:22px;}
+    .btab-lbl{font-size:10px;font-weight:700;color:var(--text3);margin-top:2px;}
+    .btab.active .btab-lbl{color:var(--gold-d);}
+    .page{display:none;padding:14px 14px 90px;max-width:480px;margin:0 auto;}
+    .page.active{display:block;}
+
+    /* ONLINE TOGGLE */
+    .online-toggle{background:#fff;border:1.5px solid var(--border);border-radius:20px;padding:18px;text-align:center;margin-bottom:14px;box-shadow:var(--shadow);}
+    .tog-btn{display:inline-flex;align-items:center;gap:10px;padding:13px 32px;border-radius:50px;border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:16px;font-weight:700;transition:all 0.3s;}
+    .tog-online{background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;box-shadow:0 4px 14px rgba(34,197,94,0.3);}
+    .tog-offline{background:var(--bg3);color:var(--text2);border:2px solid var(--border);}
+    .tog-dot{width:9px;height:9px;border-radius:50%;background:currentColor;animation:tdot 1s infinite;}
+    @keyframes tdot{0%,100%{opacity:1}50%{opacity:0.2}}
+
+    /* RIDE REQUEST */
+    .ride-req-card{background:#fff;border:2px solid var(--gold);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-g);margin-bottom:14px;display:none;animation:slideIn 0.3s ease;}
+    .ride-req-card.show{display:block;}
+    @keyframes slideIn{from{transform:translateY(-8px);opacity:0}to{transform:translateY(0);opacity:1}}
+    .req-hdr{background:linear-gradient(135deg,var(--gold-d),var(--gold));padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
+    .req-timer{font-size:28px;font-weight:900;color:#fff;}
+    .req-body{padding:16px;}
+    .req-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:14px;}
+    .req-acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+
+    /* RIDE ACTIVE STATES */
+    .ride-state{display:none;}
+    .ride-state.show{display:block;}
+
+    /* ARRIVE BTN */
+    .arrive-btn{width:100%;padding:18px;border:none;border-radius:16px;background:linear-gradient(135deg,var(--gold-d),var(--gold));color:#fff;font-family:'Tajawal',sans-serif;font-size:18px;font-weight:900;cursor:pointer;box-shadow:var(--shadow-g);margin-bottom:12px;animation:arrPulse 2s infinite;}
+    @keyframes arrPulse{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0.4)}50%{box-shadow:0 0 0 12px rgba(201,168,76,0)}}
+
+    /* QR SCANNER */
+    .scan-wrap{text-align:center;}
+    #qr-video-wrap{width:100%;max-width:280px;margin:0 auto;border-radius:14px;overflow:hidden;border:2px solid var(--gold);position:relative;}
+    #qr-video{width:100%;display:block;}
+    .scan-line{position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:scanLine 2s linear infinite;}
+    @keyframes scanLine{0%{top:0%}100%{top:100%}}
+    .scan-ok{background:#dcfce7;border:1.5px solid #86efac;border-radius:12px;padding:12px;margin-top:12px;font-size:14px;font-weight:700;color:#166534;display:none;}
+
+    /* LANDMARKS (DRIVER - INTERACTIVE) */
+    .lm-card{background:#fff;border:1.5px solid var(--border-g);border-radius:20px;padding:18px;box-shadow:var(--shadow-g);margin-bottom:14px;}
+    .lm-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+    .prog-wrap2{background:var(--bg3);border-radius:10px;height:6px;overflow:hidden;margin-bottom:14px;}
+    .prog-bar2{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));border-radius:10px;transition:width 0.5s;}
+    .lm-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.2s;border:1.5px solid var(--border);}
+    .lm-item:hover{border-color:var(--gold);}
+    .lm-item.done-item{background:#f0fdf4;border-color:#86efac;cursor:default;}
+    .lm-item.current-item{background:#fefce8;border-color:var(--gold);border-width:2px;}
+    .lm-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;transition:all 0.3s;}
+    .lm-pend{background:var(--bg3);color:var(--text3);border:1.5px solid var(--border);}
+    .lm-cur-dot{background:#fef3c7;color:#92400e;border:2px solid var(--gold);animation:lbk 1s infinite;}
+    .lm-done-dot{background:#dcfce7;color:#166534;border:1.5px solid #86efac;}
+    @keyframes lbk{0%,100%{opacity:1}50%{opacity:0.4}}
+    .lm-name{flex:1;font-size:14px;font-weight:500;}
+    .lm-name.done{color:var(--text3);text-decoration:line-through;}
+    .lm-tap-hint{font-size:11px;color:var(--text3);margin-top:2px;}
+
+    /* PTT */
+    .ptt-card{background:#fff;border:1.5px solid var(--border-g);border-radius:20px;padding:20px;text-align:center;box-shadow:var(--shadow-g);margin-bottom:14px;}
+    .ptt-btn{width:88px;height:88px;border-radius:50%;border:3px solid var(--gold);background:#fff;color:var(--gold-d);font-size:32px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;margin:14px auto;box-shadow:var(--shadow-g);user-select:none;-webkit-user-select:none;}
+    .ptt-btn.active{background:var(--gold);color:#fff;box-shadow:0 0 24px rgba(201,168,76,0.5);}
+    .ptt-waves{display:none;gap:3px;align-items:center;justify-content:center;margin:8px 0;}
+    .ptt-waves.show{display:flex;}
+    .ptt-waves span{width:3px;background:var(--gold);border-radius:2px;animation:wv 0.8s ease-in-out infinite;}
+    .ptt-waves span:nth-child(1){height:6px;animation-delay:0s}
+    .ptt-waves span:nth-child(2){height:14px;animation-delay:0.1s}
+    .ptt-waves span:nth-child(3){height:22px;animation-delay:0.2s}
+    .ptt-waves span:nth-child(4){height:14px;animation-delay:0.3s}
+    .ptt-waves span:nth-child(5){height:6px;animation-delay:0.4s}
+    @keyframes wv{0%,100%{transform:scaleY(0.4);opacity:0.4}50%{transform:scaleY(1);opacity:1}}
+
+    /* INCOMING CALL */
+    .inc-call{background:#fff;border:2px solid var(--green);border-radius:16px;padding:18px;text-align:center;margin-bottom:14px;display:none;box-shadow:0 4px 20px rgba(34,197,94,0.15);}
+
+    /* STATUS BADGE */
+    .status-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;}
+    .sb-waiting{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
+    .sb-riding{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+
+    .ride-timer-badge{display:inline-flex;align-items:center;gap:6px;background:#eff6ff;color:#1d4ed8;border:1px solid #93c5fd;border-radius:20px;padding:6px 14px;font-size:14px;font-weight:700;}
+  </style>
+</head>
+<body>
+  <div id="loader"><img src="../logo.png" class="loader-logo" alt=""><div class="loader-bar"><div class="loader-fill"></div></div><div class="loader-txt">بوابة السائق...</div></div>
+  <div class="notif" id="notif"></div>
+
+  <div class="top-nav">
+    <span style="font-size:13px;color:var(--text3);cursor:pointer;padding:6px 10px;background:var(--bg3);border-radius:8px;" onclick="doLogout()">خروج</span>
+    <div style="display:flex;align-items:center;gap:8px;"><img src="../logo.png" style="width:30px;"><span style="font-size:16px;font-weight:900;color:var(--gold-d);">لوحة السائق</span></div>
+    <div id="online-badge" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;cursor:pointer;" onclick="toggleOnline()">
+      <span style="width:7px;height:7px;border-radius:50%;background:currentColor;"></span>
+      <span id="online-txt">غير متاح</span>
+    </div>
+  </div>
+
+  <!-- ======= HOME PAGE ======= -->
+  <div class="page active" id="page-home">
+    <!-- PROFILE CARD -->
+    <div class="card" style="display:flex;align-items:center;gap:14px;margin-top:0;">
+      <div class="avatar avatar-lg" id="drv-av">🛺</div>
+      <div style="flex:1;">
+        <div style="font-size:17px;font-weight:900;color:var(--gold-d);" id="d-name">جاري التحميل...</div>
+        <div style="font-size:12px;color:var(--text3);" id="d-phone"></div>
+        <div class="badge b-pending" id="d-status" style="margin-top:5px;">⏳ انتظار الموافقة</div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="s-days">0</div><div class="stat-label">يوم شغل</div></div>
+      <div class="stat-card"><div class="stat-num" id="s-rides">0</div><div class="stat-label">رحلة اليوم</div></div>
+      <div class="stat-card"><div class="stat-num" id="s-rating">5.0</div><div class="stat-label">⭐ تقييم</div></div>
+    </div>
+
+    <!-- 6 MONTHS PROGRESS -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+        <span style="font-size:14px;font-weight:700;color:var(--gold-d);">🏆 عداد الـ ٦ شهور</span>
+        <span style="font-size:12px;color:var(--text3);" id="d-prog-txt">0 / 180</span>
+      </div>
+      <div class="prog-wrap"><div class="prog-bar" id="d-prog" style="width:0%"></div></div>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px;">اكمل ١٨٠ يوم للحصول على كل المزايا</div>
+    </div>
+
+    <!-- ONLINE TOGGLE -->
+    <div class="online-toggle">
+      <div style="font-size:14px;color:var(--text3);margin-bottom:12px;">حالتك الآن</div>
+      <button class="tog-btn tog-offline" id="tog-btn" onclick="toggleOnline()">
+        <span class="tog-dot"></span><span id="tog-txt">غير متاح</span>
+      </button>
+    </div>
+
+    <!-- RIDE REQUEST -->
+    <div class="ride-req-card" id="ride-req">
+      <div class="req-hdr">
+        <div style="color:#fff;font-size:15px;font-weight:700;">🔔 طلب رحلة جديد!</div>
+        <div class="req-timer" id="r-timer">30</div>
+      </div>
+      <div class="req-body">
+        <div class="req-row"><span>🧑</span><span id="r-client"></span></div>
+        <div class="req-row"><span>📍</span><span id="r-from"></span></div>
+        <div class="req-row"><span>🎯</span><span id="r-to"></span></div>
+        <div class="req-row"><span>⏱️</span><span id="r-eta"></span></div>
+        <div class="req-row"><span>💰</span><span id="r-price"></span></div>
+        <div class="req-acts">
+          <button class="btn btn-red" style="margin-top:0;" onclick="rejectRide()">❌ رفض</button>
+          <button class="btn btn-green" style="margin-top:0;" onclick="acceptRide()">✅ قبول</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVE RIDE SECTION -->
+    <div id="active-ride-section">
+
+      <!-- STATE 1: GOING TO CLIENT -->
+      <div class="ride-state" id="rs-going">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div class="status-badge sb-waiting">🚗 في الطريق للعميل</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div style="font-size:14px;color:var(--text3);margin-bottom:4px;">وجهتك الآن</div>
+          <div style="font-size:16px;font-weight:700;color:var(--gold-d);" id="rs-client-loc">-</div>
+          <div style="font-size:13px;color:var(--text3);margin-top:4px;" id="rs-client-name2">-</div>
+        </div>
+        <button class="arrive-btn" onclick="driverArrived()">
+          📍 وصلت للعميل — اضغط هنا
+        </button>
+      </div>
+
+      <!-- STATE 2: WAITING CLIENT (QR SCAN) -->
+      <div class="ride-state" id="rs-waiting">
+        <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:14px;padding:14px;text-align:center;margin-bottom:14px;">
+          <div style="font-size:17px;font-weight:900;color:#166534;">📍 في انتظار العميل</div>
+          <div style="font-size:13px;color:#166534;margin-top:3px;">العميل شايف QR — في انتظار المسح</div>
+        </div>
+        <div class="card scan-wrap">
+          <div style="font-size:15px;font-weight:700;color:var(--gold-d);margin-bottom:4px;">📷 امسح QR العميل</div>
+          <div style="font-size:13px;color:var(--text3);margin-bottom:14px;">وجّه الكاميرا على QR العميل لبدء الرحلة</div>
+          <div id="qr-video-wrap"><video id="qr-video" autoplay playsinline></video><div class="scan-line"></div></div>
+          <div class="scan-ok" id="scan-ok">✅ تم التعرف — الرحلة بدأت!</div>
+          <button class="btn btn-gold" style="margin-top:12px;" onclick="startCamera()">📸 تشغيل الكاميرا</button>
+          <button class="btn btn-silver" onclick="stopCamera()" style="margin-top:6px;">إيقاف الكاميرا</button>
+          <div style="font-size:11px;color:var(--text3);margin-top:8px;">أو اضغط تأكيد يدوي إذا كان الـ QR واضح</div>
+          <button class="btn btn-outline" style="margin-top:6px;font-size:14px;" onclick="confirmQRManual()">✋ تأكيد يدوي</button>
+        </div>
+      </div>
+
+      <!-- STATE 3: IN RIDE - LANDMARKS -->
+      <div class="ride-state" id="rs-riding">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div class="status-badge sb-riding">🟢 الرحلة جارية</div>
+          <div class="ride-timer-badge">⏱️ <span id="ride-timer">00:00</span></div>
+        </div>
+
+        <div class="lm-card">
+          <div class="lm-hdr">
+            <div style="font-size:15px;font-weight:700;color:var(--gold-d);">🗺️ مسار الرحلة</div>
+            <div style="font-size:13px;color:var(--text3);"><span id="lm-done">0</span> / <span id="lm-total">0</span></div>
+          </div>
+          <div class="prog-wrap2"><div class="prog-bar2" id="ride-prog" style="width:0%"></div></div>
+          <div id="lm-list-driver"></div>
+          <div style="font-size:12px;color:var(--text3);text-align:center;margin-top:8px;">اضغط على كل معلم لما تعدي عليه ✓</div>
+        </div>
+
+        <button class="btn btn-green" id="end-ride-btn" onclick="endRide()" style="opacity:0.4;pointer-events:none;margin-bottom:10px;">🏁 إنهاء الرحلة (اكمل كل المعالم أولاً)</button>
+        <button class="btn btn-red" onclick="cancelRide()">❌ إلغاء الرحلة</button>
+      </div>
+
+    </div>
+
+    <!-- MENU -->
+    <div class="section-lbl" style="margin-top:16px;">خدمات</div>
+    <div class="menu-grid">
+      <div class="mitem" onclick="switchPage('page-ptt',document.querySelectorAll(\'.btab\')[1])"><div class="micon">🎙️</div><div class="mname">واكي توكي</div></div>
+      <div class="mitem" onclick="switchPage('page-profile',document.querySelectorAll(\'.btab\')[2])"><div class="micon">👤</div><div class="mname">بروفايلي</div></div>
+      <div class="mitem"><div class="micon">💰</div><div class="mname">المحفظة</div></div>
+      <div class="mitem"><div class="micon">📊</div><div class="mname">إحصائياتي</div></div>
+    </div>
+  </div>
+
+  <!-- ======= PTT PAGE ======= -->
+  <div class="page" id="page-ptt">
+    <div style="padding-top:14px;">
+      <div class="inc-call" id="inc-call">
+        <div style="font-size:28px;margin-bottom:8px;">📞</div>
+        <div style="font-size:16px;font-weight:700;color:var(--green);">استدعاء من الإدارة</div>
+        <div style="font-size:13px;color:var(--text3);margin-bottom:14px;" id="call-from">الإدارة المركزية</div>
+        <button class="btn btn-green" onclick="answerCall()" style="margin-bottom:8px;">📞 رد</button>
+        <button class="btn btn-silver" onclick="document.getElementById('inc-call').style.display='none'">رفض</button>
+      </div>
+      <div class="ptt-card">
+        <div style="font-size:16px;font-weight:700;color:var(--gold-d);margin-bottom:4px;">🎙️ واكي توكي</div>
+        <div style="font-size:13px;color:var(--text3);" id="ptt-status">في انتظار استدعاء من الإدارة...</div>
+        <div class="ptt-waves" id="ptt-waves"><span></span><span></span><span></span><span></span><span></span></div>
+        <button class="ptt-btn" id="ptt-btn" onmousedown="startTalk()" onmouseup="stopTalk()" ontouchstart="startTalk(event)" ontouchend="stopTalk()">🎙️</button>
+        <div style="font-size:12px;color:var(--text3);margin-top:6px;">اضغط مع الاستمرار للتحدث — ارفع إصبعك للإيقاف</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= PROFILE PAGE ======= -->
+  <div class="page" id="page-profile">
+    <div style="padding-top:14px;">
+      <div class="card" style="text-align:center;padding:28px 20px;">
+        <div class="avatar avatar-lg" style="margin:0 auto 14px;" id="pr-av">🛺</div>
+        <div style="font-size:20px;font-weight:900;color:var(--gold-d);" id="pr-name">-</div>
+        <div style="font-size:13px;color:var(--text3);margin-top:3px;" id="pr-phone">-</div>
+        <div style="display:flex;justify-content:center;gap:20px;margin-top:16px;">
+          <div><div style="font-size:22px;font-weight:900;color:var(--gold-d);" id="pr-rating">5.0</div><div style="font-size:11px;color:var(--text3);">التقييم</div></div>
+          <div><div style="font-size:22px;font-weight:900;color:var(--gold-d);" id="pr-days">0</div><div style="font-size:11px;color:var(--text3);">يوم شغل</div></div>
+          <div><div style="font-size:22px;font-weight:900;color:var(--gold-d);" id="pr-rides">0</div><div style="font-size:11px;color:var(--text3);">رحلة</div></div>
+        </div>
+      </div>
+      <button class="btn btn-outline" onclick="doLogout()">🚪 تسجيل الخروج</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM TABS -->
+  <div class="bottom-tabs">
+    <button class="btab active" onclick="switchPage('page-home',this)"><div class="btab-icon">🏠</div><div class="btab-lbl">الرئيسية</div></button>
+    <button class="btab" onclick="switchPage('page-ptt',this)"><div class="btab-icon">🎙️</div><div class="btab-lbl">واكي توكي</div></button>
+    <button class="btab" onclick="switchPage('page-profile',this)"><div class="btab-icon">👤</div><div class="btab-lbl">بروفايلي</div></button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, onSnapshot,
+      collection, query, where, getDocs, limit, serverTimestamp }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const app=initializeApp({apiKey:"AIzaSyBwc1mp1NRakXfeSkDy4_ntHu38K5L1hIg",authDomain:"elghafeer-28543.firebaseapp.com",projectId:"elghafeer-28543",storageBucket:"elghafeer-28543.firebasestorage.app",messagingSenderId:"862588981889",appId:"1:862588981889:web:36f5cfc3d1e9bcd8289f90"});
+    const auth=getAuth(app), db=getFirestore(app);
+
+    let driver=null, isOnline=false, rideTimer=null, curRideId=null;
+    let curRide=null, camStream=null, mRec=null, locInt=null;
+    let rideTimerInt=null, rideStartTime=null;
+
+    window.addEventListener('load',()=>setTimeout(()=>{const l=document.getElementById('loader');l.style.opacity='0';l.style.visibility='hidden';},2000));
+
+    onAuthStateChanged(auth,async user=>{
+      if(!user){window.location.href='signup.html';return;}
+      const snap=await getDoc(doc(db,'drivers',user.uid));
+      if(!snap.exists()||!snap.data().name){window.location.href='signup.html';return;}
+      driver={uid:user.uid,...snap.data()};
+      loadDash(driver); listenDriver(user.uid); listenPTT(user.uid);
+    });
+
+    function loadDash(d){
+      document.getElementById('d-name').textContent=d.name||'السائق';
+      document.getElementById('d-phone').textContent=d.phone||'';
+      document.getElementById('s-days').textContent=d.workDays||0;
+      document.getElementById('s-rides').textContent=d.todayRides||0;
+      document.getElementById('s-rating').textContent=d.rating?(+d.rating).toFixed(1):'5.0';
+      document.getElementById('d-prog-txt').textContent=(d.workDays||0)+' / 180';
+      document.getElementById('d-prog').style.width=Math.min(((d.workDays||0)/180)*100,100)+'%';
+      document.getElementById('pr-name').textContent=d.name||'-';
+      document.getElementById('pr-phone').textContent=d.phone||'-';
+      document.getElementById('pr-days').textContent=d.workDays||0;
+      document.getElementById('pr-rides').textContent=d.totalRides||0;
+      document.getElementById('pr-rating').textContent=d.rating?(+d.rating).toFixed(1):'5.0';
+      if(d.status==='approved'){const el=document.getElementById('d-status');el.className='badge b-approved';el.textContent='✅ معتمد';}
+      if(d.photoURL){document.getElementById('drv-av').innerHTML=`<img src="${d.photoURL}">`;document.getElementById('pr-av').innerHTML=`<img src="${d.photoURL}">`;}
+    }
+
+    // ===== ONLINE TOGGLE =====
+    window.toggleOnline=async()=>{
+      if(!driver){return;}
+      if(driver.status!=='approved'){notif('حسابك لم يعتمد بعد','error');return;}
+      isOnline=!isOnline;
+      await updateDoc(doc(db,'drivers',driver.uid),{isOnline,lastSeen:serverTimestamp()});
+      const btn=document.getElementById('tog-btn'), txt=document.getElementById('tog-txt');
+      const badge=document.getElementById('online-badge'), btxt=document.getElementById('online-txt');
+      if(isOnline){
+        btn.className='tog-btn tog-online'; txt.textContent='متاح للرحلات';
+        badge.style.cssText='display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;background:#dcfce7;color:#166534;border:1px solid #86efac;cursor:pointer;';
+        btxt.textContent='متاح';
+        notif('🟢 أنت متاح الآن','success'); trackLoc();
+      } else {
+        btn.className='tog-btn tog-offline'; txt.textContent='غير متاح';
+        badge.style.cssText='display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;cursor:pointer;';
+        btxt.textContent='غير متاح';
+        notif('🔴 غير متاح','info'); if(locInt)clearInterval(locInt);
+      }
+    };
+
+    function trackLoc(){
+      if(!navigator.geolocation)return;
+      locInt=setInterval(()=>navigator.geolocation.getCurrentPosition(p=>{
+        if(driver)updateDoc(doc(db,'drivers',driver.uid),{lat:p.coords.latitude,lng:p.coords.longitude});
+      }),10000);
+    }
+
+    // ===== LISTEN DRIVER DOC =====
+    function listenDriver(uid){
+      onSnapshot(doc(db,'drivers',uid),snap=>{
+        if(!snap.exists())return;
+        const d=snap.data();
+        if(d.pendingRide&&!curRideId) showRideReq(d.pendingRide);
+        if(d.activeRide) showActiveRide(d.activeRide);
+      });
+      // Also listen for active ride
+      onSnapshot(query(collection(db,'rides'),where('driverId','==',uid),where('status','in',['accepted','driver_arrived','in_ride']),limit(1)),snap=>{
+        if(!snap.empty){const r=snap.docs[0];curRideId=r.id;watchRideDoc(r.id);}
+      });
+    }
+
+    function watchRideDoc(rid){
+      onSnapshot(doc(db,'rides',rid),snap=>{
+        if(!snap.exists())return;
+        curRide=snap.data();
+        if(curRide.landmarks) renderLandmarks(curRide.landmarks);
+        if(curRide.status==='in_ride'&&!rideStartTime){rideStartTime=new Date();startRideTimer();}
+        if(curRide.status==='completed'){stopRideTimer();hideAllStates();}
+        if(curRide.status==='cancelled'){stopRideTimer();hideAllStates();curRideId=null;notif('تم إلغاء الرحلة','info');}
+      });
+    }
+
+    // ===== RIDE REQUEST =====
+    function showRideReq(r){
+      document.getElementById('r-client').textContent='العميل: '+(r.clientName||'عميل');
+      document.getElementById('r-from').textContent='من: '+(r.from||'-');
+      document.getElementById('r-to').textContent='إلى: '+(r.to||'-');
+      document.getElementById('r-eta').textContent='وقت الوصال: '+(r.eta||'-');
+      document.getElementById('r-price').textContent='السعر: '+(r.price||'15')+' جنيه';
+      document.getElementById('ride-req').classList.add('show');
+      curRideId=r.rideId;
+      let t=30; document.getElementById('r-timer').textContent=t;
+      rideTimer=setInterval(()=>{t--;document.getElementById('r-timer').textContent=t;if(t<=0){clearInterval(rideTimer);rejectRide();}},1000);
+    }
+
+    window.acceptRide=async()=>{
+      clearInterval(rideTimer);
+      document.getElementById('ride-req').classList.remove('show');
+      if(!curRideId)return;
+      const rSnap=await getDoc(doc(db,'rides',curRideId));
+      if(!rSnap.exists())return;
+      const r=rSnap.data();
+      await updateDoc(doc(db,'rides',curRideId),{status:'accepted',driverId:driver.uid,driverName:driver.name,driverRating:driver.rating||5,driverDays:driver.workDays||0,driverPhoto:driver.photoURL||''});
+      await updateDoc(doc(db,'drivers',driver.uid),{pendingRide:null});
+      // Show going state
+      document.getElementById('rs-client-loc').textContent=r.from||'-';
+      document.getElementById('rs-client-name2').textContent='العميل: '+(r.clientName||'عميل');
+      showRideState('going');
+      watchRideDoc(curRideId);
+      notif('✅ تم قبول الرحلة! توجه للعميل','success');
+    };
+
+    window.rejectRide=async()=>{
+      clearInterval(rideTimer);
+      document.getElementById('ride-req').classList.remove('show');
+      if(curRideId)await updateDoc(doc(db,'rides',curRideId),{status:'rejected'});
+      await updateDoc(doc(db,'drivers',driver.uid),{pendingRide:null});
+      curRideId=null;
+    };
+
+    // ===== DRIVER ARRIVED =====
+    window.driverArrived=async()=>{
+      if(!curRideId)return;
+      const otp=Math.floor(1000+Math.random()*9000).toString();
+      await updateDoc(doc(db,'rides',curRideId),{status:'driver_arrived',otp,arrivedAt:serverTimestamp()});
+      showRideState('waiting');
+      notif('📍 تم إشعار العميل - في انتظار المسح','success');
+    };
+
+    // ===== CAMERA =====
+    window.startCamera=async()=>{
+      try{camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});document.getElementById('qr-video').srcObject=camStream;notif('📷 الكاميرا شغالة','success');}
+      catch(e){notif('تعذر الكاميرا','error');}
+    };
+    window.stopCamera=()=>{if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}};
+
+    // Manual QR confirm (fallback)
+    window.confirmQRManual=async()=>{
+      if(!curRideId)return;
+      await updateDoc(doc(db,'rides',curRideId),{status:'in_ride',startedAt:serverTimestamp()});
+      await updateDoc(doc(db,'drivers',driver.uid),{activeRide:{rideId:curRideId}});
+      document.getElementById('scan-ok').style.display='block';
+      setTimeout(()=>{showRideState('riding');stopCamera();},1500);
+      notif('🚀 بدأت الرحلة!','success');
+    };
+
+    // ===== LANDMARKS (DRIVER - INTERACTIVE) =====
+    function renderLandmarks(lms){
+      const done=lms.filter(l=>l.done).length, total=lms.length;
+      const pct=total?Math.round((done/total)*100):0;
+      document.getElementById('lm-done').textContent=done;
+      document.getElementById('lm-total').textContent=total;
+      document.getElementById('ride-prog').style.width=pct+'%';
+
+      // Enable end ride btn when all done
+      const endBtn=document.getElementById('end-ride-btn');
+      if(done===total&&total>0){endBtn.style.opacity='1';endBtn.style.pointerEvents='auto';endBtn.textContent='🏁 إنهاء الرحلة — وصلنا!';}
+      else{endBtn.style.opacity='0.4';endBtn.style.pointerEvents='none';endBtn.textContent=`🏁 إنهاء الرحلة (${total-done} معالم متبقية)`;}
+
+      document.getElementById('lm-list-driver').innerHTML=lms.map((lm,i)=>{
+        const isDone=lm.done, isCur=!isDone&&(i===0||lms[i-1]?.done);
+        return`<div class="lm-item ${isDone?'done-item':isCur?'current-item':''}" onclick="${!isDone?`markLandmark(${i})`:''}">
+          <div class="lm-dot ${isDone?'lm-done-dot':isCur?'lm-cur-dot':'lm-pend'}">${isDone?'✓':i+1}</div>
+          <div>
+            <div class="lm-name ${isDone?'done':''}">${lm.name}</div>
+            ${isCur?'<div class="lm-tap-hint">اضغط لما تعدي هنا ✓</div>':''}
+          </div>
+          <span style="font-size:18px;">${isDone?'✅':isCur?'👆':''}</span>
+        </div>`;
+      }).join('');
+    }
+
+    window.markLandmark=async(idx)=>{
+      if(!curRideId||!curRide)return;
+      const lms=[...curRide.landmarks];
+      lms[idx]={...lms[idx],done:true,doneAt:new Date().toISOString()};
+      await updateDoc(doc(db,'rides',curRideId),{landmarks:lms});
+      notif(`✅ تم تأكيد: ${lms[idx].name}`,'success');
+      if(navigator.vibrate) navigator.vibrate(100);
+    };
+
+    // ===== END RIDE =====
+    window.endRide=async()=>{
+      if(!curRideId)return;
+      await updateDoc(doc(db,'rides',curRideId),{status:'completed',endedAt:serverTimestamp()});
+      await updateDoc(doc(db,'drivers',driver.uid),{
+        activeRide:null,
+        todayRides:(driver.todayRides||0)+1,
+        totalRides:(driver.totalRides||0)+1
+      });
+      stopRideTimer(); hideAllStates(); curRideId=null; curRide=null;
+      notif('🏁 تم إنهاء الرحلة بنجاح!','success');
+    };
+
+    window.cancelRide=async()=>{
+      if(!curRideId)return;
+      await updateDoc(doc(db,'rides',curRideId),{status:'cancelled'});
+      await updateDoc(doc(db,'drivers',driver.uid),{activeRide:null,pendingRide:null});
+      stopRideTimer(); hideAllStates(); curRideId=null; curRide=null;
+      notif('تم إلغاء الرحلة','info');
+    };
+
+    // ===== TIMER =====
+    function startRideTimer(){
+      rideTimerInt=setInterval(()=>{
+        if(!rideStartTime)return;
+        const diff=Math.floor((Date.now()-rideStartTime.getTime())/1000);
+        const m=String(Math.floor(diff/60)).padStart(2,'0'), s=String(diff%60).padStart(2,'0');
+        document.getElementById('ride-timer').textContent=m+':'+s;
+      },1000);
+    }
+    function stopRideTimer(){if(rideTimerInt)clearInterval(rideTimerInt);rideTimerInt=null;rideStartTime=null;}
+
+    // ===== SHOW RIDE STATE =====
+    function showRideState(s){
+      ['going','waiting','riding'].forEach(st=>document.getElementById('rs-'+st).classList.remove('show'));
+      document.getElementById('rs-'+s).classList.add('show');
+    }
+    function hideAllStates(){
+      ['going','waiting','riding'].forEach(st=>document.getElementById('rs-'+st).classList.remove('show'));
+    }
+    function showActiveRide(r){showRideState('riding');}
+
+    // ===== PTT =====
+    window.startTalk=async(e)=>{
+      if(e)e.preventDefault();
+      try{const s=await navigator.mediaDevices.getUserMedia({audio:true});mRec=new MediaRecorder(s);mRec.start();document.getElementById('ptt-btn').classList.add('active');document.getElementById('ptt-waves').classList.add('show');document.getElementById('ptt-status').textContent='🔴 جاري البث...';}
+      catch(e){notif('تعذر المايك','error');}
+    };
+    window.stopTalk=()=>{if(mRec&&mRec.state!=='inactive'){mRec.stop();mRec.stream.getTracks().forEach(t=>t.stop());}document.getElementById('ptt-btn').classList.remove('active');document.getElementById('ptt-waves').classList.remove('show');document.getElementById('ptt-status').textContent='في انتظار استدعاء من الإدارة...';};
+
+    function listenPTT(uid){
+      onSnapshot(doc(db,'drivers',uid),snap=>{
+        if(!snap.exists())return;
+        const d=snap.data();
+        if(d.incomingCall){document.getElementById('inc-call').style.display='block';document.getElementById('call-from').textContent=d.incomingCall.from||'الإدارة';}
+      });
+    }
+    window.answerCall=()=>{document.getElementById('inc-call').style.display='none';notif('📞 اضغط للتحدث','info');};
+
+    // ===== LOGOUT =====
+    window.doLogout=async()=>{if(locInt)clearInterval(locInt);if(driver)await updateDoc(doc(db,'drivers',driver.uid),{isOnline:false});await signOut(auth);window.location.href='signup.html';};
+
+    window.switchPage=(id,btn)=>{document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.btab').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btn)btn.classList.add('active');window.scrollTo(0,0);};
+    window.notif=(msg,type='info')=>{const n=document.getElementById('notif');n.textContent=msg;n.className=`notif notif-${type}`;n.style.display='block';setTimeout(()=>n.style.display='none',3500);};
+  </script>
+</body>
+</html>
