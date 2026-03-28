@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>الغفير — أمان وراحة نفسية</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: #fff; }
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 40px 24px;
+      background: linear-gradient(160deg, #fff 60%, #f8f5ee 100%);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle at 10% 10%, rgba(201,168,76,0.07) 0%, transparent 50%),
+        radial-gradient(circle at 90% 90%, rgba(138,154,176,0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .logo-wrap {
+      width: 160px; height: 160px; margin-bottom: 24px;
+      filter: drop-shadow(0 8px 24px rgba(201,168,76,0.25));
+      animation: float 3s ease-in-out infinite;
+    }
+    .logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
+    .main-title {
+      font-size: 52px; font-weight: 900; color: var(--gold-d);
+      letter-spacing: 2px; margin-bottom: 6px;
+    }
+    .main-sub { font-size: 16px; color: var(--text3); margin-bottom: 32px; }
+    .btn-group { width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 12px; }
+    .btn-hero {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      padding: 18px 32px; border-radius: 14px;
+      font-family: 'Tajawal', sans-serif; font-size: 18px; font-weight: 700;
+      cursor: pointer; text-decoration: none; border: none;
+      transition: all 0.25s;
+    }
+    .btn-hero-gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold-d));
+      color: #fff; box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+    }
+    .btn-hero-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,0.4); }
+    .btn-hero-silver {
+      background: #fff; color: var(--gold-d);
+      border: 2px solid var(--gold);
+    }
+    .btn-hero-silver:hover { background: rgba(201,168,76,0.05); transform: translateY(-2px); }
+    .btn-hero-admin {
+      background: var(--bg3); color: var(--text3);
+      border: 1px solid var(--border); font-size: 15px;
+    }
+    .features {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px; width: 100%; max-width: 380px;
+      margin: 32px 0 20px;
+    }
+    .feat {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px 12px; text-align: center;
+      box-shadow: var(--shadow); transition: all 0.2s;
+    }
+    .feat:hover { border-color: var(--gold); box-shadow: var(--shadow-g); }
+    .feat-icon { font-size: 24px; margin-bottom: 6px; }
+    .feat-name { font-size: 13px; font-weight: 700; color: var(--gold-d); }
+    .feat-desc { font-size: 11px; color: var(--text3); margin-top: 3px; }
+    .stats-bar {
+      display: flex; gap: 24px; margin-bottom: 28px;
+    }
+    .sbar { text-align: center; }
+    .sbar-num { font-size: 26px; font-weight: 900; color: var(--gold-d); }
+    .sbar-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
+    .footer-txt { font-size: 12px; color: var(--text3); margin-top: 16px; }
+    .footer-txt span { color: var(--gold-d); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div id="loader">
+    <img src="logo.png" class="loader-logo" alt="الغفير">
+    <div class="loader-bar"><div class="loader-fill"></div></div>
+    <div class="loader-txt">جاري تشغيل منظومة الغفير...</div>
+  </div>
+
+  <div class="hero">
+    <div class="logo-wrap"><img src="logo.png" alt="الغفير"></div>
+    <div class="main-title">الغفير</div>
+    <div class="main-sub">أمان وراحة نفسية</div>
+
+    <div class="stats-bar">
+      <div class="sbar"><div class="sbar-num">٢٤/٧</div><div class="sbar-label">مراقبة</div></div>
+      <div class="sbar"><div class="sbar-num">١٠٠٪</div><div class="sbar-label">معتمدين</div></div>
+      <div class="sbar"><div class="sbar-num">٠ جنيه</div><div class="sbar-label">تسجيل</div></div>
+    </div>
+
+    <div class="btn-group">
+      <a href="client/signup.html" class="btn-hero btn-hero-gold">🧑 أنا عميل — سجل أو دخول</a>
+      <a href="driver/signup.html" class="btn-hero btn-hero-silver">🛺 أنا سائق — سجل أو دخول</a>
+      <a href="admin/index.html" class="btn-hero btn-hero-admin">🔐 لوحة تحكم الإدارة</a>
+    </div>
+
+    <div class="features">
+      <div class="feat"><div class="feat-icon">📍</div><div class="feat-name">تتبع مباشر</div><div class="feat-desc">لحظة بلحظة</div></div>
+      <div class="feat"><div class="feat-icon">🔐</div><div class="feat-name">QR تشغيل</div><div class="feat-desc">بداية آمنة</div></div>
+      <div class="feat"><div class="feat-icon">👨‍👩‍👧</div><div class="feat-name">نظام العائلة</div><div class="feat-desc">متابعة ولي الأمر</div></div>
+      <div class="feat"><div class="feat-icon">🚨</div><div class="feat-name">زر SOS</div><div class="feat-desc">طوارئ فورية</div></div>
+      <div class="feat"><div class="feat-icon">🎙️</div><div class="feat-name">واكي توكي</div><div class="feat-desc">تواصل مباشر</div></div>
+      <div class="feat"><div class="feat-icon">⭐</div><div class="feat-name">تقييم</div><div class="feat-desc">جودة مضمونة</div></div>
+    </div>
+
+    <div class="footer-txt">جميع الحقوق محفوظة © ٢٠٢٦ <span>الغفير</span></div>
+  </div>
+
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const l = document.getElementById('loader');
+        l.style.opacity = '0'; l.style.visibility = 'hidden';
+      }, 2200);
+    });
+  </script>
+</body>
+</html>
