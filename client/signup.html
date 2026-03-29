@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>الغفير — تسجيل العميل</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div id="loader">
+    <img src="../logo.png" class="loader-logo" alt="">
+    <div class="loader-bar"><div class="loader-fill"></div></div>
+    <div class="loader-txt">جاري التحميل...</div>
+  </div>
+  <div class="notif" id="notif"></div>
+
+  <!-- ======= STEP 1: CHOOSE TYPE ======= -->
+  <div class="screen active" id="s-type">
+    <div class="header">
+      <a href="../index.html" class="back-btn">→ رجوع</a>
+      <div class="header-logo"><img src="../logo.png" alt=""><span class="header-title">الغفير</span></div>
+    </div>
+    <div style="text-align:center;padding:20px 0 28px;">
+      <img src="../logo.png" style="width:80px;margin-bottom:16px;">
+      <div style="font-size:22px;font-weight:900;color:var(--gold-d);margin-bottom:4px;">🧑 تسجيل العميل</div>
+      <div style="font-size:14px;color:var(--text3);">اختر نوع حسابك</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card" onclick="chooseType('individual')" style="cursor:pointer;border:2px solid transparent;transition:all 0.2s;" id="type-ind">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:32px;">🧑</div>
+          <div>
+            <div style="font-size:16px;font-weight:700;color:var(--gold-d);">حساب فردي</div>
+            <div style="font-size:13px;color:var(--text3);margin-top:2px;">حساب شخصي عادي</div>
+          </div>
+          <div style="margin-right:auto;font-size:20px;color:var(--silver);" id="check-ind">○</div>
+        </div>
+      </div>
+      <div class="card" onclick="chooseType('family')" style="cursor:pointer;border:2px solid transparent;transition:all 0.2s;" id="type-fam">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:32px;">👨‍👩‍👧</div>
+          <div>
+            <div style="font-size:16px;font-weight:700;color:var(--gold-d);">حساب عائلي (تابع)</div>
+            <div style="font-size:13px;color:var(--text3);margin-top:2px;">تابع لعائلة — ولي الأمر يتابعك</div>
+          </div>
+          <div style="margin-right:auto;font-size:20px;color:var(--silver);" id="check-fam">○</div>
+        </div>
+      </div>
+    </div>
+    <!-- FAMILY PARENT CODE -->
+    <div id="family-code-wrap" style="display:none;">
+      <div class="card" style="background:var(--bg3);">
+        <div class="input-label">رقم موبايل ولي الأمر</div>
+        <input class="input-field ltr" type="tel" id="parent-phone" placeholder="01xxxxxxxxx" maxlength="11">
+        <div style="font-size:12px;color:var(--text3);margin-top:6px;">سيتم إضافتك تلقائياً لعائلته</div>
+      </div>
+    </div>
+    <button class="btn btn-gold" onclick="goToAgreement()" style="margin-top:8px;">التالي — اقرأ الاتفاقية</button>
+    <div class="divider">أو</div>
+    <p style="text-align:center;font-size:14px;color:var(--text3);">عندك حساب بالفعل؟ <span style="color:var(--gold-d);cursor:pointer;font-weight:700;" onclick="showS('s-login')">دخول</span></p>
+  </div>
+
+  <!-- ======= STEP 2: AGREEMENT ======= -->
+  <div class="screen" id="s-agreement">
+    <div class="header">
+      <button class="back-btn" onclick="showS('s-type')">→ رجوع</button>
+      <div class="header-logo"><img src="../logo.png" alt=""><span class="header-title">الاتفاقية</span></div>
+    </div>
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:20px;font-weight:900;color:var(--gold-d);">📋 اتفاقية الاستخدام</div>
+      <div style="font-size:13px;color:var(--text3);margin-top:4px;">اقرأ الاتفاقية كاملة قبل التسجيل</div>
+    </div>
+    <div class="agreement-box">
+      <h4>اتفاقية استخدام منصة الغفير</h4>
+      <p>أهلاً بك في منصة <strong>الغفير</strong> — منظومة التنقل الآمن. بتسجيلك فأنت توافق على الشروط التالية:</p>
+
+      <h4 style="margin-top:12px;">١. قبول الشروط</h4>
+      <p>باستخدامك لهذه المنصة فأنت توافق على جميع الشروط والأحكام الواردة في هذه الاتفاقية وتلتزم بها.</p>
+
+      <h4 style="margin-top:12px;">٢. بيانات المستخدم</h4>
+      <p>يجب أن تكون البيانات المُدخلة صحيحة وحقيقية. يُحظر التسجيل ببيانات مزيفة أو انتحال هوية الغير.</p>
+
+      <h4 style="margin-top:12px;">٣. الخصوصية والتتبع</h4>
+      <p>توافق على مشاركة موقعك الجغرافي أثناء الرحلات لأغراض الأمان والمتابعة. لن تُستخدم بياناتك لأي أغراض تجارية.</p>
+
+      <h4 style="margin-top:12px;">٤. نظام العائلة</h4>
+      <p>في حالة الحساب العائلي، يحق لولي الأمر متابعة رحلاتك ومساراتك بشكل كامل لأغراض الأمان فقط.</p>
+
+      <h4 style="margin-top:12px;">٥. سلوك المستخدم</h4>
+      <p>يجب التعامل باحترام مع السائقين وجميع مستخدمي المنصة. أي سلوك مسيء قد يؤدي لإيقاف الحساب.</p>
+
+      <h4 style="margin-top:12px;">٦. زر SOS</h4>
+      <p>زر الطوارئ مخصص للحالات الحقيقية فقط. الإساءة في استخدامه تُعرّض صاحبه للمساءلة القانونية.</p>
+
+      <h4 style="margin-top:12px;">٧. التقييمات</h4>
+      <p>التقييمات يجب أن تكون صادقة وموضوعية. يُحظر التقييم الكيدي أو المُتحيز.</p>
+
+      <h4 style="margin-top:12px;">٨. التعديلات</h4>
+      <p>تحتفظ منصة الغفير بحق تعديل هذه الشروط في أي وقت مع إشعار المستخدمين.</p>
+
+      <h4 style="margin-top:12px;">٩. المسؤولية</h4>
+      <p>منصة الغفير وسيط تقني فقط. المسؤولية القانونية تقع على السائق والعميل بشكل مباشر.</p>
+
+      <h4 style="margin-top:12px;">١٠. القانون المعمول به</h4>
+      <p>تخضع هذه الاتفاقية للقانون المصري ولقضاء المحاكم المصرية المختصة.</p>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:14px;background:var(--bg3);border-radius:var(--radius-sm);cursor:pointer;" onclick="toggleAgree()">
+      <div id="agree-check" style="width:22px;height:22px;border-radius:6px;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;"></div>
+      <div style="font-size:14px;color:var(--text2);">أوافق على جميع شروط وأحكام اتفاقية الاستخدام</div>
+    </div>
+    <button class="btn btn-gold" id="agree-btn" onclick="goToPhone()" style="opacity:0.4;pointer-events:none;">✅ موافق — التالي</button>
+  </div>
+
+  <!-- ======= STEP 3: PHONE ======= -->
+  <div class="screen" id="s-phone">
+    <div class="header">
+      <button class="back-btn" onclick="showS('s-agreement')">→ رجوع</button>
+      <div class="header-logo"><img src="../logo.png" alt=""><span class="header-title">التسجيل</span></div>
+    </div>
+    <div class="card-gold" style="text-align:center;padding:24px;">
+      <div style="font-size:20px;font-weight:900;color:var(--gold-d);margin-bottom:4px;">📲 إدخال رقم الموبايل</div>
+      <div style="font-size:13px;color:var(--text3);margin-bottom:20px;">هيوصلك كود تحقق SMS</div>
+      <div class="input-group">
+        <label class="input-label">رقم الموبايل</label>
+        <input class="input-field ltr" type="tel" id="phone-in" placeholder="01xxxxxxxxx" maxlength="11">
+      </div>
+      <div id="recaptcha-container"></div>
+      <button class="btn btn-gold" onclick="sendOTP()">📲 إرسال الكود</button>
+    </div>
+  </div>
+
+  <!-- ======= STEP 4: OTP ======= -->
+  <div class="screen" id="s-otp">
+    <div class="header">
+      <button class="back-btn" onclick="showS('s-phone')">→ رجوع</button>
+      <div class="header-logo"><img src="../logo.png" alt=""><span class="header-title">التحقق</span></div>
+    </div>
+    <div class="card-gold" style="text-align:center;padding:24px;">
+      <div style="font-size:20px;font-weight:900;color:var(--gold-d);margin-bottom:4px;">🔐 كود التحقق</div>
+      <div style="font-size:13px;color:var(--text3);margin-bottom:20px;">أدخل الكود المرسل على رقمك</div>
+      <div class="input-group">
+        <label class="input-label">الكود المرسل</label>
+        <input class="input-field ltr" type="number" id="otp-in" placeholder="● ● ● ● ● ●">
+      </div>
+      <button class="btn btn-gold" onclick="verifyOTP()">✅ تأكيد</button>
+      <button class="btn btn-silver" onclick="showS('s-phone')">تغيير الرقم</button>
+    </div>
+  </div>
+
+  <!-- ======= STEP 5: PROFILE ======= -->
+  <div class="screen" id="s-profile">
+    <div class="header">
+      <button class="back-btn" onclick="showS('s-otp')">→ رجوع</button>
+      <div class="header-logo"><img src="../logo.png" alt=""><span class="header-title">بياناتك</span></div>
+    </div>
+    <div class="card-gold">
+      <div style="font-size:16px;font-weight:700;color:var(--gold-d);margin-bottom:14px;">👤 أكمل بياناتك</div>
+      <div class="input-group">
+        <label class="input-label">الاسم الكامل</label>
+        <input class="input-field" type="text" id="reg-name" placeholder="اسمك بالكامل">
+      </div>
+      <div class="input-group">
+        <label class="input-label">العمر</label>
+        <input class="input-field ltr" type="number" id="reg-age" placeholder="عمرك" min="10" max="99">
+      </div>
+      <button class="btn btn-gold" onclick="completeProfile()">✅ إنهاء التسجيل</button>
+    </div>
+  </div>
+
+  <!-- ======= LOGIN ======= -->
+  <div class="screen" id="s-login">
+    <div class="header">
+      <a href="../index.html" class="back-btn">→ رجوع</a>
+      <div class="header-logo"><img src="../logo.png" alt=""><span class="header-title">دخول</span></div>
+    </div>
+    <div class="card-gold" style="text-align:center;padding:24px;">
+      <div style="font-size:20px;font-weight:900;color:var(--gold-d);margin-bottom:4px;">🧑 دخول العميل</div>
+      <div style="font-size:13px;color:var(--text3);margin-bottom:20px;">أدخل رقمك للدخول</div>
+      <div class="input-group">
+        <label class="input-label">رقم الموبايل</label>
+        <input class="input-field ltr" type="tel" id="login-phone" placeholder="01xxxxxxxxx" maxlength="11">
+      </div>
+      <div id="recaptcha-login"></div>
+      <button class="btn btn-gold" onclick="loginSendOTP()">📲 إرسال الكود</button>
+    </div>
+    <div class="divider">مش مسجل؟</div>
+    <button class="btn btn-outline" onclick="showS('s-type')">سجل حساب جديد</button>
+  </div>
+
+  <!-- ======= LOGIN OTP ======= -->
+  <div class="screen" id="s-login-otp">
+    <div class="header">
+      <button class="back-btn" onclick="showS('s-login')">→ رجوع</button>
+      <div class="header-logo"><img src="../logo.png" alt=""><span class="header-title">تأكيد الدخول</span></div>
+    </div>
+    <div class="card-gold" style="text-align:center;padding:24px;">
+      <div style="font-size:20px;font-weight:900;color:var(--gold-d);margin-bottom:20px;">🔐 كود التحقق</div>
+      <div class="input-group">
+        <label class="input-label">الكود المرسل</label>
+        <input class="input-field ltr" type="number" id="login-otp" placeholder="● ● ● ● ● ●">
+      </div>
+      <button class="btn btn-gold" onclick="loginVerify()">✅ دخول</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, query, where, getDocs }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const app = initializeApp({
+      apiKey:"AIzaSyBwc1mp1NRakXfeSkDy4_ntHu38K5L1hIg",
+      authDomain:"elghafeer-28543.firebaseapp.com",
+      projectId:"elghafeer-28543",
+      storageBucket:"elghafeer-28543.firebasestorage.app",
+      messagingSenderId:"862588981889",
+      appId:"1:862588981889:web:36f5cfc3d1e9bcd8289f90"
+    });
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let confirmRes = null, loginConfirmRes = null;
+    let selectedType = 'individual';
+    let agreedToTerms = false;
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const l = document.getElementById('loader');
+        l.style.opacity='0'; l.style.visibility='hidden';
+      }, 2000);
+    });
+
+    onAuthStateChanged(auth, async user => {
+      if (user) {
+        const snap = await getDoc(doc(db,'clients',user.uid));
+        if (snap.exists() && snap.data().name) {
+          window.location.href = 'dashboard.html';
+        } else {
+          showS('s-profile');
+        }
+      }
+    });
+
+    // TYPE SELECTION
+    window.chooseType = (type) => {
+      selectedType = type;
+      ['individual','family'].forEach(t => {
+        const card = document.getElementById('type-'+t.slice(0,3));
+        const check = document.getElementById('check-'+t.slice(0,3));
+        card.style.border = t === type ? '2px solid var(--gold)' : '2px solid transparent';
+        check.textContent = t === type ? '✅' : '○';
+        check.style.color = t === type ? 'var(--green)' : 'var(--silver)';
+      });
+      document.getElementById('family-code-wrap').style.display = type === 'family' ? 'block' : 'none';
+    };
+
+    // AGREEMENT
+    window.toggleAgree = () => {
+      agreedToTerms = !agreedToTerms;
+      const check = document.getElementById('agree-check');
+      const btn = document.getElementById('agree-btn');
+      check.innerHTML = agreedToTerms ? '✓' : '';
+      check.style.background = agreedToTerms ? 'var(--gold)' : '#fff';
+      check.style.color = '#fff';
+      check.style.borderColor = agreedToTerms ? 'var(--gold)' : 'var(--border)';
+      btn.style.opacity = agreedToTerms ? '1' : '0.4';
+      btn.style.pointerEvents = agreedToTerms ? 'auto' : 'none';
+    };
+
+    window.goToAgreement = () => {
+      if (!selectedType) { notif('اختر نوع الحساب أولاً','error'); return; }
+      if (selectedType === 'family' && !document.getElementById('parent-phone').value.trim()) {
+        notif('أدخل رقم ولي الأمر','error'); return;
+      }
+      showS('s-agreement');
+    };
+
+    window.goToPhone = () => {
+      if (!agreedToTerms) { notif('يجب الموافقة على الاتفاقية','error'); return; }
+      showS('s-phone');
+    };
+
+    // OTP SEND
+    window.sendOTP = async () => {
+      const ph = document.getElementById('phone-in').value.trim();
+      if (ph.length < 11) { notif('أدخل رقم صحيح','error'); return; }
+      try {
+        if (!window._rcap) window._rcap = new RecaptchaVerifier(auth,'recaptcha-container',{size:'invisible'});
+        confirmRes = await signInWithPhoneNumber(auth,'+2'+ph,window._rcap);
+        showS('s-otp');
+        notif('✅ تم إرسال الكود!','success');
+      } catch(e) { notif('خطأ: '+e.message,'error'); }
+    };
+
+    window.verifyOTP = async () => {
+      const code = document.getElementById('otp-in').value.trim();
+      if (!confirmRes) { notif('اطلب الكود أولاً','error'); return; }
+      try {
+        await confirmRes.confirm(code);
+        notif('✅ تم التحقق!','success');
+      } catch(e) { notif('كود خاطئ','error'); }
+    };
+
+    // COMPLETE PROFILE
+    window.completeProfile = async () => {
+      const name = document.getElementById('reg-name').value.trim();
+      const age = document.getElementById('reg-age').value.trim();
+      if (!name) { notif('أدخل اسمك','error'); return; }
+      const user = auth.currentUser;
+      if (!user) { notif('سجل دخول أولاً','error'); return; }
+
+      let parentId = null;
+      if (selectedType === 'family') {
+        const parentPhone = document.getElementById('parent-phone')?.value?.trim();
+        if (parentPhone) {
+          const q = query(collection(db,'clients'), where('phone','==','+2'+parentPhone));
+          const snap = await getDocs(q);
+          if (!snap.empty) parentId = snap.docs[0].id;
+        }
+      }
+
+      await setDoc(doc(db,'clients',user.uid), {
+        uid: user.uid, name, age: +age||0,
+        phone: user.phoneNumber,
+        accountType: selectedType,
+        parentId, agreedToTerms: true,
+        totalRides: 0, createdAt: serverTimestamp()
+      });
+
+      if (parentId) {
+        const parentRef = doc(db,'clients',parentId);
+        const pSnap = await getDoc(parentRef);
+        if (pSnap.exists()) {
+          const members = pSnap.data().familyMembers || [];
+          members.push({ uid: user.uid, name, phone: user.phoneNumber });
+          await updateDoc(parentRef, { familyMembers: members });
+        }
+      }
+
+      notif('🎉 تم التسجيل بنجاح!','success');
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+    };
+
+    // LOGIN
+    window.loginSendOTP = async () => {
+      const ph = document.getElementById('login-phone').value.trim();
+      if (ph.length < 11) { notif('أدخل رقم صحيح','error'); return; }
+      try {
+        if (!window._rcapL) window._rcapL = new RecaptchaVerifier(auth,'recaptcha-login',{size:'invisible'});
+        loginConfirmRes = await signInWithPhoneNumber(auth,'+2'+ph,window._rcapL);
+        showS('s-login-otp');
+        notif('✅ تم إرسال الكود!','success');
+      } catch(e) { notif('خطأ: '+e.message,'error'); }
+    };
+
+    window.loginVerify = async () => {
+      const code = document.getElementById('login-otp').value.trim();
+      try {
+        await loginConfirmRes.confirm(code);
+        notif('✅ أهلاً بك!','success');
+      } catch(e) { notif('كود خاطئ','error'); }
+    };
+
+    // UTILS
+    window.showS = id => {
+      document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo(0,0);
+    };
+    window.notif = (msg,type='info') => {
+      const n = document.getElementById('notif');
+      n.textContent=msg; n.className=`notif notif-${type}`; n.style.display='block';
+      setTimeout(()=>n.style.display='none',3000);
+    };
+  </script>
+</body>
+</html>
