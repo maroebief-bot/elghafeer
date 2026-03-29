@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>الغفير — تسجيل شريك</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div id="loader"><img src="../logo.png" class="loader-logo" alt=""><div class="loader-bar"><div class="loader-fill"></div></div></div>
+<div class="notif" id="notif"></div>
+
+<!-- TYPE SELECTION -->
+<div class="screen active" id="s-type">
+  <div class="header">
+    <a href="../index.html" class="back-btn">→ رجوع</a>
+    <div class="header-logo"><img src="../logo.png" alt=""><span class="header-title">الغفير</span></div>
+  </div>
+  <div style="text-align:center;padding:20px 0 24px;">
+    <div style="font-size:32px;margin-bottom:10px;">🤝</div>
+    <div style="font-size:22px;font-weight:900;color:var(--gold-d);">انضم كشريك</div>
+    <div style="font-size:14px;color:var(--text3);margin-top:4px;">اختار نوع نشاطك التجاري</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="card" onclick="selectType('workshop')" style="cursor:pointer;border:2px solid transparent;transition:all 0.2s;" id="t-workshop">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="font-size:36px;">🔧</div>
+        <div><div style="font-size:16px;font-weight:700;color:var(--gold-d);">ورشة تصليح</div><div style="font-size:13px;color:var(--text3);margin-top:2px;">استقبل سائقي الغفير للصيانة والإصلاح</div></div>
+        <div style="margin-right:auto;font-size:20px;" id="ch-workshop">○</div>
+      </div>
+    </div>
+    <div class="card" onclick="selectType('parts_shop')" style="cursor:pointer;border:2px solid transparent;transition:all 0.2s;" id="t-parts_shop">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="font-size:36px;">⚙️</div>
+        <div><div style="font-size:16px;font-weight:700;color:var(--gold-d);">محل قطع غيار</div><div style="font-size:13px;color:var(--text3);margin-top:2px;">بيع قطع الغيار للسائقين بأسعار مخصوصة</div></div>
+        <div style="margin-right:auto;font-size:20px;" id="ch-parts_shop">○</div>
+      </div>
+    </div>
+    <div class="card" onclick="selectType('company')" style="cursor:pointer;border:2px solid transparent;transition:all 0.2s;" id="t-company">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="font-size:36px;">🏢</div>
+        <div><div style="font-size:16px;font-weight:700;color:var(--gold-d);">شركة</div><div style="font-size:13px;color:var(--text3);margin-top:2px;">احجز رحلات لموظفيك بأسعار مخصوصة</div></div>
+        <div style="margin-right:auto;font-size:20px;" id="ch-company">○</div>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-gold" onclick="goToAgreement()" style="margin-top:8px;">التالي</button>
+  <div class="divider">عندك حساب؟</div>
+  <button class="btn btn-outline" onclick="showS('s-login')">دخول</button>
+</div>
+
+<!-- AGREEMENT -->
+<div class="screen" id="s-agreement">
+  <div class="header"><button class="back-btn" onclick="showS('s-type')">→ رجوع</button><div class="header-logo"><img src="../logo.png" alt=""><span class="header-title">الاتفاقية</span></div></div>
+  <div class="agreement-box">
+    <h4>اتفاقية الشريك — منصة الغفير</h4>
+    <p>بتسجيلك كشريك في منصة الغفير فأنت توافق على الشروط التالية:</p>
+    <h4 style="margin-top:12px;">١. الخصومات</h4>
+    <p>نسبة الخصم المقدمة لسائقي الغفير تُحددها الإدارة حصراً ولا يمكن تعديلها من جهتك.</p>
+    <h4 style="margin-top:12px;">٢. جودة الخدمة</h4>
+    <p>تلتزم بتقديم خدمة ذات جودة عالية لسائقي المنصة وتطبيق نسب الخصم المحددة بدون استثناء.</p>
+    <h4 style="margin-top:12px;">٣. التقييم</h4>
+    <p>السائقون يقيمون خدمتك — التقييم المنخفض المتكرر قد يؤدي لإيقاف شراكتك.</p>
+    <h4 style="margin-top:12px;">٤. موافقة الإدارة</h4>
+    <p>الانضمام مشروط بموافقة إدارة الغفير بعد مراجعة بياناتك.</p>
+    <h4 style="margin-top:12px;">٥. البيانات</h4>
+    <p>تقر بصحة كل البيانات المُدخلة. البيانات المزيفة تؤدي لإلغاء الشراكة فوراً.</p>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;padding:14px;background:var(--bg3);border-radius:var(--radius-sm);cursor:pointer;margin-bottom:14px;" onclick="toggleAgree()">
+    <div id="agree-check" style="width:22px;height:22px;border-radius:6px;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;"></div>
+    <div style="font-size:14px;color:var(--text2);">أوافق على الاتفاقية</div>
+  </div>
+  <button class="btn btn-gold" id="agree-btn" onclick="showS('s-register')" style="opacity:0.4;pointer-events:none;">التالي</button>
+</div>
+
+<!-- REGISTER -->
+<div class="screen" id="s-register">
+  <div class="header"><button class="back-btn" onclick="showS('s-agreement')">→ رجوع</button><div class="header-logo"><img src="../logo.png" alt=""><span class="header-title">بيانات النشاط</span></div></div>
+  <div class="card-gold">
+    <div style="font-size:16px;font-weight:700;color:var(--gold-d);margin-bottom:14px;" id="reg-title">🔧 بيانات الورشة</div>
+    <div class="input-group"><label class="input-label">اسم النشاط التجاري</label><input class="input-field" id="r-name" placeholder="اسم الورشة / المحل / الشركة"></div>
+    <div class="input-group"><label class="input-label">اسم صاحب النشاط</label><input class="input-field" id="r-owner" placeholder="الاسم الكامل"></div>
+    <div class="input-group"><label class="input-label">رقم الموبايل</label><input class="input-field ltr" id="r-phone" type="tel" placeholder="01xxxxxxxxx"></div>
+    <div class="input-group"><label class="input-label">العنوان</label><input class="input-field" id="r-address" placeholder="عنوان النشاط التجاري"></div>
+    <div class="input-group"><label class="input-label">وصف الخدمة</label><textarea class="input-field" id="r-desc" placeholder="اوصف خدمتك..." rows="3" style="resize:none;letter-spacing:0;"></textarea></div>
+    <label class="input-label">صورة النشاط أو واجهة المحل</label>
+    <div class="uarea" onclick="document.getElementById('r-img').click()"><div class="uarea-icon">📸</div><div class="uarea-label">اضغط لرفع صورة</div><img class="uprv" id="p-img"></div>
+    <input type="file" id="r-img" accept="image/*" style="display:none" onchange="prevImg(this,'p-img')">
+  </div>
+  <div id="recaptcha-container"></div>
+  <button class="btn btn-gold" onclick="submitPartner()">📤 إرسال طلب الانضمام</button>
+  <div style="font-size:12px;color:var(--text3);text-align:center;margin-top:8px;">سيتم مراجعة طلبك خلال ٢٤ ساعة</div>
+</div>
+
+<!-- PENDING -->
+<div class="screen" id="s-pending">
+  <div style="text-align:center;padding:60px 20px;">
+    <div style="font-size:64px;margin-bottom:20px;">⏳</div>
+    <div style="font-size:22px;font-weight:900;color:var(--gold-d);margin-bottom:8px;">طلبك قيد المراجعة</div>
+    <div style="font-size:14px;color:var(--text3);">سيتم مراجعة بياناتك من قِبل إدارة الغفير والرد خلال ٢٤ ساعة</div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="screen" id="s-login">
+  <div class="header"><a href="../index.html" class="back-btn">→ رجوع</a><div class="header-logo"><img src="../logo.png" alt=""><span class="header-title">دخول الشريك</span></div></div>
+  <div class="card-gold" style="text-align:center;padding:24px;">
+    <div style="font-size:22px;font-weight:900;color:var(--gold-d);margin-bottom:20px;">🤝 دخول الشريك</div>
+    <div class="input-group"><label class="input-label">رقم الموبايل</label><input class="input-field ltr" id="l-phone" type="tel" placeholder="01xxxxxxxxx" maxlength="11"></div>
+    <div id="recaptcha-login"></div>
+    <button class="btn btn-gold" onclick="loginSend()">📲 إرسال الكود</button>
+  </div>
+  <div class="divider">شريك جديد؟</div>
+  <button class="btn btn-outline" onclick="showS('s-type')">سجل كشريك</button>
+</div>
+
+<div class="screen" id="s-login-otp">
+  <div class="header"><button class="back-btn" onclick="showS('s-login')">→ رجوع</button><div class="header-logo"><img src="../logo.png" alt=""><span class="header-title">تأكيد الدخول</span></div></div>
+  <div class="card-gold" style="text-align:center;padding:24px;">
+    <div style="font-size:20px;font-weight:900;color:var(--gold-d);margin-bottom:20px;">🔐 كود التحقق</div>
+    <div class="input-group"><input class="input-field ltr" id="l-otp" type="number" placeholder="● ● ● ● ● ●"></div>
+    <button class="btn btn-gold" onclick="loginVerify()">✅ دخول</button>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged }
+    from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL }
+    from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+  const app=initializeApp({apiKey:"AIzaSyBwc1mp1NRakXfeSkDy4_ntHu38K5L1hIg",authDomain:"elghafeer-28543.firebaseapp.com",projectId:"elghafeer-28543",storageBucket:"elghafeer-28543.firebasestorage.app",messagingSenderId:"862588981889",appId:"1:862588981889:web:36f5cfc3d1e9bcd8289f90"});
+  const auth=getAuth(app), db=getFirestore(app), storage=getStorage(app);
+
+  let confirmRes=null, loginConfirmRes=null, selectedType='workshop', agreed=false;
+
+  window.addEventListener('load',()=>setTimeout(()=>{const l=document.getElementById('loader');l.style.opacity='0';l.style.visibility='hidden';},2000));
+
+  // Auto-detect type from URL
+  const urlType = new URLSearchParams(window.location.search).get('type');
+  if (urlType) { selectedType = urlType; selectType(urlType); }
+
+  onAuthStateChanged(auth, async user => {
+    if (user) {
+      const snap = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js").then(m=>m.getDoc(m.doc(db,'partners',user.uid)));
+      if (snap?.exists()) showS('s-pending');
+    }
+  });
+
+  window.selectType = (type) => {
+    selectedType = type;
+    ['workshop','parts_shop','company'].forEach(t=>{
+      document.getElementById('t-'+t).style.border = t===type ? '2px solid var(--gold)' : '2px solid transparent';
+      document.getElementById('ch-'+t).textContent = t===type ? '✅' : '○';
+    });
+    const titles = {workshop:'🔧 بيانات الورشة', parts_shop:'⚙️ بيانات محل قطع الغيار', company:'🏢 بيانات الشركة'};
+    document.getElementById('reg-title').textContent = titles[type] || 'بيانات النشاط';
+  };
+  selectType('workshop');
+
+  window.toggleAgree = () => {
+    agreed = !agreed;
+    const c=document.getElementById('agree-check'), b=document.getElementById('agree-btn');
+    c.innerHTML=agreed?'✓':''; c.style.background=agreed?'var(--gold)':'#fff';
+    c.style.color='#fff'; c.style.borderColor=agreed?'var(--gold)':'var(--border)';
+    b.style.opacity=agreed?'1':'0.4'; b.style.pointerEvents=agreed?'auto':'none';
+  };
+
+  window.submitPartner = async () => {
+    const name=document.getElementById('r-name').value.trim();
+    const owner=document.getElementById('r-owner').value.trim();
+    const phone=document.getElementById('r-phone').value.trim();
+    const address=document.getElementById('r-address').value.trim();
+    const desc=document.getElementById('r-desc').value.trim();
+    if(!name||!phone){notif('أدخل اسم النشاط والموبايل','error');return;}
+    const user=auth.currentUser;
+    if(!user){notif('يجب تسجيل الدخول أولاً','error');return;}
+    let imgURL='';
+    const imgFile=document.getElementById('r-img').files[0];
+    if(imgFile){const r2=ref(storage,`partners/${user.uid}/cover.jpg`);await uploadBytes(r2,imgFile);imgURL=await getDownloadURL(r2);}
+    await setDoc(doc(db,'partners',user.uid),{uid:user.uid,name,owner,phone,address,desc,type:selectedType,imgURL,status:'pending',discount:0,agreedToTerms:true,createdAt:serverTimestamp()});
+    notif('✅ تم إرسال طلبك للإدارة!','success');
+    setTimeout(()=>showS('s-pending'),1500);
+  };
+
+  window.loginSend = async () => {
+    const ph=document.getElementById('l-phone').value.trim();
+    if(ph.length<11){notif('أدخل رقم صحيح','error');return;}
+    try{if(!window._rcap)window._rcap=new RecaptchaVerifier(auth,'recaptcha-login',{size:'invisible'});loginConfirmRes=await signInWithPhoneNumber(auth,'+2'+ph,window._rcap);showS('s-login-otp');notif('✅ تم إرسال الكود','success');}
+    catch(e){notif('خطأ: '+e.message,'error');}
+  };
+  window.loginVerify = async () => {
+    try{await loginConfirmRes.confirm(document.getElementById('l-otp').value.trim());window.location.href='dashboard.html';}
+    catch(e){notif('كود خاطئ','error');}
+  };
+  window.showS=id=>{document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);};
+  window.notif=(msg,type='info')=>{const n=document.getElementById('notif');n.textContent=msg;n.className=`notif notif-${type}`;n.style.display='block';setTimeout(()=>n.style.display='none',3000);};
+  window.prevImg=(inp,pid)=>{const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{const p=document.getElementById(pid);p.src=e.target.result;p.style.display='block';};r.readAsDataURL(f);};
+  window.goToAgreement=()=>{if(!selectedType){notif('اختار نوع النشاط','error');return;}showS('s-agreement');};
+</script>
+</body>
+</html>
