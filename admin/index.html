@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>الغفير — لوحة التحكم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c9a84c;--gold-l:#e8c96a;--gold-d:#a07830;
+  --silver:#8a9ab0;--silver-l:#ccd4de;
+  --blue:#1a2e8a;--blue-d:#0f1d5e;
+  --bg:#f0f2f7;--white:#fff;
+  --border:#e2e8f0;--border-g:rgba(201,168,76,0.25);
+  --text:#1a1a2e;--text2:#4a5568;--text3:#8a9ab0;
+  --green:#22c55e;--red:#ef4444;--orange:#f59e0b;
+  --shadow:0 2px 12px rgba(26,46,138,0.07);
+  --shadow-g:0 4px 20px rgba(201,168,76,0.15);
+  --r:14px;--r-sm:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);direction:rtl;min-height:100vh;}
+
+/* ===== LOGIN ===== */
+#login-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#f0f2f7 0%,#e8f0fe 100%);padding:20px;
+}
+.login-card{
+  background:var(--white);border-radius:24px;padding:40px 32px;
+  width:100%;max-width:400px;
+  box-shadow:0 8px 40px rgba(26,46,138,0.12);
+  border:1.5px solid var(--border-g);
+}
+.login-logo{text-align:center;margin-bottom:24px;}
+.login-logo img{width:80px;filter:drop-shadow(0 4px 12px rgba(201,168,76,0.35));}
+.login-title{text-align:center;font-family:'Cairo',sans-serif;font-size:22px;font-weight:900;color:var(--gold-d);margin-bottom:4px;}
+.login-sub{text-align:center;font-size:13px;color:var(--text3);margin-bottom:28px;}
+.inp-grp{margin-bottom:14px;}
+.inp-label{font-size:13px;font-weight:700;color:var(--text2);margin-bottom:6px;display:block;}
+.inp{width:100%;padding:13px 16px;background:#f8f9fb;border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:'Tajawal',sans-serif;font-size:15px;outline:none;transition:border 0.2s;}
+.inp:focus{border-color:var(--gold);background:var(--white);}
+.btn-login{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold-d));border:none;border-radius:var(--r-sm);color:#fff;font-family:'Tajawal',sans-serif;font-size:17px;font-weight:700;cursor:pointer;box-shadow:var(--shadow-g);transition:all 0.2s;margin-top:8px;}
+.btn-login:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(201,168,76,0.35);}
+
+/* ===== LAYOUT ===== */
+#admin-app{display:none;min-height:100vh;}
+.sidebar{
+  position:fixed;top:0;right:0;bottom:0;width:240px;
+  background:var(--blue-d);
+  display:flex;flex-direction:column;z-index:100;
+  box-shadow:4px 0 20px rgba(0,0,0,0.15);
+  transition:transform 0.3s;
+}
+.sidebar-logo{
+  padding:20px 16px;border-bottom:1px solid rgba(255,255,255,0.08);
+  display:flex;align-items:center;gap:10px;
+}
+.sidebar-logo img{width:36px;filter:drop-shadow(0 2px 6px rgba(201,168,76,0.4));}
+.sidebar-brand{font-family:'Cairo',sans-serif;font-size:18px;font-weight:900;color:var(--gold-l);}
+.sidebar-user{
+  padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.su-name{font-size:14px;font-weight:700;color:#fff;}
+.su-role{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;}
+.su-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;margin-top:4px;}
+.role-super{background:rgba(239,68,68,0.2);color:#fca5a5;border:1px solid rgba(239,68,68,0.3);}
+.role-manager{background:rgba(201,168,76,0.2);color:var(--gold-l);border:1px solid rgba(201,168,76,0.3);}
+.role-supervisor{background:rgba(34,197,94,0.2);color:#86efac;border:1px solid rgba(34,197,94,0.3);}
+.role-monitor{background:rgba(138,154,176,0.2);color:var(--silver-l);border:1px solid rgba(138,154,176,0.3);}
+.nav-menu{flex:1;overflow-y:auto;padding:12px 0;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 16px;cursor:pointer;
+  color:rgba(255,255,255,0.6);font-size:14px;font-weight:500;
+  transition:all 0.2s;border-right:3px solid transparent;
+  margin-bottom:2px;
+}
+.nav-item:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.05);}
+.nav-item.active{color:var(--gold-l);background:rgba(201,168,76,0.1);border-right-color:var(--gold);}
+.nav-item-icon{font-size:18px;width:22px;text-align:center;}
+.nav-section{font-size:10px;font-weight:700;color:rgba(255,255,255,0.25);letter-spacing:2px;padding:10px 16px 4px;text-transform:uppercase;}
+.sidebar-footer{padding:14px 16px;border-top:1px solid rgba(255,255,255,0.08);}
+.logout-btn{width:100%;padding:10px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.25);border-radius:var(--r-sm);color:#fca5a5;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.logout-btn:hover{background:rgba(239,68,68,0.25);}
+
+.main-area{margin-right:240px;min-height:100vh;display:flex;flex-direction:column;}
+.top-bar{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:12px 24px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:90;box-shadow:var(--shadow);
+}
+.page-title{font-family:'Cairo',sans-serif;font-size:18px;font-weight:900;color:var(--text);}
+.top-bar-right{display:flex;align-items:center;gap:12px;}
+.sys-status{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--green);background:#f0fdf4;border:1px solid #86efac;border-radius:20px;padding:4px 12px;}
+.sys-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:sdot 2s infinite;}
+@keyframes sdot{0%,100%{opacity:1}50%{opacity:0.3}}
+
+.content{flex:1;padding:20px 24px;}
+
+/* PAGES */
+.page{display:none;}
+.page.active{display:block;}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px;}
+.stat-card{
+  background:var(--white);border-radius:var(--r);padding:18px;
+  box-shadow:var(--shadow);border:1px solid var(--border);
+  border-top:3px solid var(--gold);
+}
+.stat-num{font-size:28px;font-weight:900;color:var(--gold-d);}
+.stat-label{font-size:12px;color:var(--text3);margin-top:3px;}
+.stat-change{font-size:11px;margin-top:6px;font-weight:700;}
+.sc-up{color:var(--green);}
+.sc-dn{color:var(--red);}
+
+/* CARDS */
+.card{background:var(--white);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:14px;}
+.card-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead{background:#f8f9fb;}
+th{padding:10px 14px;text-align:right;font-weight:700;color:var(--text2);border-bottom:1px solid var(--border);white-space:nowrap;}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle;}
+tr:last-child td{border:none;}
+tr:hover td{background:#fafbff;}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.b-super{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;}
+.b-manager{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
+.b-supervisor{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.b-monitor{background:#f0f0f0;color:#5a6a7a;border:1px solid #ccd4de;}
+.b-driver{background:#eff6ff;color:#1d4ed8;border:1px solid #93c5fd;}
+.b-client{background:#f5f3ff;color:#6d28d9;border:1px solid #c4b5fd;}
+.b-partner{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa;}
+.b-pending{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
+.b-approved{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.b-rejected{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;}
+.b-banned{background:#f0f0f0;color:#5a6a7a;border:1px solid #ccd4de;}
+.b-online{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.b-offline{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;}
+.b-fixed{background:#eff6ff;color:#1d4ed8;border:1px solid #93c5fd;}
+.b-percent{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
+
+/* BTNS */
+.btn{padding:7px 14px;border-radius:var(--r-sm);border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;transition:all 0.2s;display:inline-flex;align-items:center;gap:5px;}
+.btn-ok{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.btn-ok:hover{background:#22c55e;color:#fff;}
+.btn-rej{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;}
+.btn-rej:hover{background:#ef4444;color:#fff;}
+.btn-call{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
+.btn-call:hover{background:var(--gold);color:#fff;}
+.btn-edit{background:#eff6ff;color:#1d4ed8;border:1px solid #93c5fd;}
+.btn-edit:hover{background:#3b82f6;color:#fff;}
+.btn-ban{background:#f0f0f0;color:var(--text3);border:1px solid var(--border);}
+.btn-ban:hover{background:#6b7280;color:#fff;}
+.btn-pay{background:rgba(201,168,76,0.12);color:var(--gold-d);border:1px solid var(--border-g);}
+.btn-pay:hover{background:var(--gold);color:#fff;}
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:#fff;box-shadow:var(--shadow-g);}
+.btn-primary:hover{transform:translateY(-1px);}
+
+/* SEARCH */
+.search-bar{
+  padding:10px 14px;background:var(--white);
+  border:1.5px solid var(--border);border-radius:var(--r-sm);
+  color:var(--text);font-family:'Tajawal',sans-serif;font-size:14px;
+  outline:none;width:100%;margin-bottom:14px;direction:rtl;
+}
+.search-bar:focus{border-color:var(--gold);}
+
+/* FILTER ROW */
+.filter-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+.filter-select{padding:8px 12px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:'Tajawal',sans-serif;font-size:13px;outline:none;cursor:pointer;}
+.filter-select:focus{border-color:var(--gold);}
+
+/* PTT PANEL */
+.ptt-panel{
+  background:linear-gradient(135deg,var(--blue-d),var(--blue));
+  border-radius:var(--r);padding:20px;text-align:center;
+  margin-bottom:14px;border:1.5px solid var(--border-g);
+}
+.ptt-big{
+  width:72px;height:72px;border-radius:50%;
+  border:3px solid var(--gold);background:rgba(201,168,76,0.1);
+  color:var(--gold-l);font-size:28px;cursor:pointer;
+  transition:all 0.2s;display:inline-flex;align-items:center;justify-content:center;
+  margin:12px auto;box-shadow:var(--shadow-g);
+  user-select:none;-webkit-user-select:none;
+}
+.ptt-big.active{background:var(--gold);color:#fff;box-shadow:0 0 24px rgba(201,168,76,0.5);}
+
+/* SOS ALERT */
+.sos-alert{
+  background:#fef2f2;border:2px solid #fca5a5;
+  border-radius:var(--r);padding:16px;margin-bottom:10px;
+  animation:sosBlink 1.5s ease-in-out infinite;
+}
+@keyframes sosBlink{0%,100%{border-color:#fca5a5}50%{border-color:#ef4444;box-shadow:0 0 12px rgba(239,68,68,0.3)}}
+
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-ov.show{display:flex;}
+.modal-box{background:var(--white);border-radius:20px;padding:28px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,0.2);max-height:90vh;overflow-y:auto;}
+.modal-title{font-family:'Cairo',sans-serif;font-size:18px;font-weight:900;color:var(--text);margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text3);}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:480px){.form-grid{grid-template-columns:1fr;}}
+.form-full{grid-column:1/-1;}
+
+/* NOTIF */
+.notif{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9999;padding:12px 24px;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;display:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.15);}
+.notif-success{background:#22c55e;color:#fff;}
+.notif-error{background:#ef4444;color:#fff;}
+.notif-info{background:var(--gold);color:#fff;}
+
+/* LIVE RIDES */
+.live-ride{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--r);padding:14px;margin-bottom:10px;
+  display:flex;align-items:center;gap:14px;
+  box-shadow:var(--shadow);transition:all 0.2s;
+}
+.live-ride:hover{border-color:var(--gold);}
+.live-ride-icon{width:44px;height:44px;border-radius:50%;background:rgba(201,168,76,0.1);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+
+/* AVATAR */
+.av{width:38px;height:38px;border-radius:50%;background:#f0f2f5;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0;}
+.av img{width:100%;height:100%;object-fit:cover;}
+
+/* ERP */
+.erp-tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;}
+.etab{padding:9px 16px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:var(--white);color:var(--text3);cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;white-space:nowrap;transition:all 0.2s;}
+.etab.active{background:var(--gold);color:#fff;border-color:var(--gold);}
+
+@media(max-width:768px){
+  .sidebar{transform:translateX(100%);width:260px;}
+  .sidebar.open{transform:translateX(0);}
+  .main-area{margin-right:0;}
+  .content{padding:14px;}
+}
+</style>
+</head>
+<body>
+<div class="notif" id="notif"></div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo"><img src="../logo.png" alt="الغفير"></div>
+    <div class="login-title">🔐 لوحة التحكم</div>
+    <div class="login-sub">الغفير — الإدارة المركزية</div>
+    <div class="inp-grp"><label class="inp-label">اسم المستخدم</label><input class="inp" type="text" id="l-user" placeholder="admin"></div>
+    <div class="inp-grp"><label class="inp-label">كلمة المرور</label><input class="inp" type="password" id="l-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+    <button class="btn-login" onclick="adminLogin()">🔑 دخول</button>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="admin-app">
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <img src="../logo.png" alt="">
+      <span class="sidebar-brand">الغفير</span>
+    </div>
+    <div class="sidebar-user">
+      <div class="su-name" id="su-name">الإدارة</div>
+      <div class="su-role" id="su-role">جاري التحميل...</div>
+      <div class="su-badge role-super" id="su-badge">superadmin</div>
+    </div>
+    <div class="nav-menu">
+      <div class="nav-section">الرئيسية</div>
+      <div class="nav-item active" onclick="showPage('pg-home',this)"><div class="nav-item-icon">🏠</div>الرئيسية</div>
+      <div class="nav-item" onclick="showPage('pg-live',this)"><div class="nav-item-icon">🔴</div>رحلات حية</div>
+
+      <div class="nav-section">إدارة الأشخاص</div>
+      <div class="nav-item" onclick="showPage('pg-drivers',this)"><div class="nav-item-icon">🛺</div>السائقين</div>
+      <div class="nav-item" onclick="showPage('pg-clients',this)"><div class="nav-item-icon">🧑</div>العملاء</div>
+      <div class="nav-item" onclick="showPage('pg-admins',this)"><div class="nav-item-icon">👥</div>الإدارة والمشرفين</div>
+
+      <div class="nav-section" id="nav-section-ops">العمليات</div>
+      <div class="nav-item" onclick="showPage('pg-rides',this)"><div class="nav-item-icon">🚗</div>الرحلات</div>
+      <div class="nav-item" onclick="showPage('pg-sos',this)"><div class="nav-item-icon">🚨</div>طوارئ SOS</div>
+      <div class="nav-item" onclick="showPage('pg-ptt',this)"><div class="nav-item-icon">🎙️</div>واكي توكي</div>
+
+      <div class="nav-section">المال والشركاء</div>
+      <div class="nav-item" onclick="showPage('pg-payments',this)"><div class="nav-item-icon">💰</div>المدفوعات</div>
+      <div class="nav-item" onclick="showPage('pg-partners',this)"><div class="nav-item-icon">🤝</div>الشركاء</div>
+      <div class="nav-item" onclick="showPage('pg-discounts',this)"><div class="nav-item-icon">🏷️</div>الخصومات</div>
+
+      <div class="nav-section" id="nav-erp-section">ERP</div>
+      <div class="nav-item" onclick="showPage('pg-erp',this)"><div class="nav-item-icon">📊</div>ERP الشركة</div>
+      <div class="nav-item" onclick="showPage('pg-reports',this)"><div class="nav-item-icon">📈</div>التقارير</div>
+
+      <div class="nav-section">الإعدادات</div>
+      <div class="nav-item" onclick="showPage('pg-settings',this)"><div class="nav-item-icon">⚙️</div>إعدادات النظام</div>
+    </div>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="adminLogout()">🚪 تسجيل الخروج</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-area">
+    <div class="top-bar">
+      <div class="page-title" id="page-title">لوحة التحكم</div>
+      <div class="top-bar-right">
+        <div class="sys-status"><div class="sys-dot"></div>النظام يعمل</div>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- HOME -->
+      <div class="page active" id="pg-home">
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-num" id="st-drivers">0</div><div class="stat-label">🛺 سائقين معتمدين</div><div class="stat-change sc-up" id="st-drivers-ch"></div></div>
+          <div class="stat-card"><div class="stat-num" id="st-online">0</div><div class="stat-label">🟢 متاحين الآن</div></div>
+          <div class="stat-card"><div class="stat-num" id="st-rides-today">0</div><div class="stat-label">🚗 رحلات اليوم</div></div>
+          <div class="stat-card"><div class="stat-num" id="st-pending">0</div><div class="stat-label">⏳ طلبات انتظار</div></div>
+          <div class="stat-card"><div class="stat-num" id="st-clients">0</div><div class="stat-label">🧑 العملاء</div></div>
+          <div class="stat-card"><div class="stat-num" id="st-partners">0</div><div class="stat-label">🤝 الشركاء</div></div>
+          <div class="stat-card"><div class="stat-num" id="st-sos">0</div><div class="stat-label">🚨 SOS النهارده</div></div>
+          <div class="stat-card"><div class="stat-num" id="st-revenue">0</div><div class="stat-label">💰 الإيراد (جنيه)</div></div>
+        </div>
+        <!-- PTT BROADCAST -->
+        <div class="ptt-panel">
+          <div style="font-size:15px;font-weight:700;color:var(--gold-l);margin-bottom:4px;">📢 بث عام لكل السائقين</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);" id="ptt-status-home">اضغط للبث على كل السائقين المتاحين</div>
+          <button class="ptt-big" id="ptt-home"
+            onmousedown="broadcastStart()" onmouseup="broadcastStop()"
+            ontouchstart="broadcastStart(event)" ontouchend="broadcastStop()">📢</button>
+          <div style="font-size:11px;color:rgba(255,255,255,0.3);">اضغط مع الاستمرار</div>
+        </div>
+        <!-- RECENT RIDES -->
+        <div class="card">
+          <div class="card-title">🚗 آخر الرحلات</div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>العميل</th><th>السائق</th><th>من</th><th>إلى</th><th>الحالة</th><th>الوقت</th></tr></thead>
+            <tbody id="recent-rides"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- LIVE RIDES -->
+      <div class="page" id="pg-live">
+        <div class="card"><div class="card-title">🔴 الرحلات الحية الآن</div><div id="live-list"><div style="text-align:center;padding:32px;color:var(--text3);">لا توجد رحلات حية الآن</div></div></div>
+      </div>
+
+      <!-- DRIVERS -->
+      <div class="page" id="pg-drivers">
+        <div class="filter-row">
+          <input class="search-bar" style="flex:1;margin-bottom:0;" placeholder="🔍 بحث بالاسم أو الرقم..." id="drv-search" oninput="filterDrivers()">
+          <select class="filter-select" id="drv-status-filter" onchange="filterDrivers()">
+            <option value="all">كل الحالات</option>
+            <option value="pending">⏳ انتظار</option>
+            <option value="approved">✅ معتمد</option>
+            <option value="rejected">❌ مرفوض</option>
+            <option value="banned">🚫 موقوف</option>
+          </select>
+          <button class="btn btn-primary" onclick="openAddDriver()">+ إضافة سائق</button>
+        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>السائق</th><th>الموبايل</th><th>الحالة</th><th>أيام العمل</th><th>التقييم</th><th>نظام الدفع</th><th>الإجراءات</th></tr></thead>
+          <tbody id="drivers-table"></tbody>
+        </table></div>
+      </div>
+
+      <!-- CLIENTS -->
+      <div class="page" id="pg-clients">
+        <input class="search-bar" placeholder="🔍 بحث..." id="cli-search" oninput="filterClients()">
+        <div class="table-wrap"><table>
+          <thead><tr><th>العميل</th><th>الموبايل</th><th>النوع</th><th>الرحلات</th><th>تاريخ التسجيل</th><th>الإجراءات</th></tr></thead>
+          <tbody id="clients-table"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ADMINS MANAGEMENT -->
+      <div class="page" id="pg-admins">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div style="font-size:15px;font-weight:700;color:var(--text);">👥 إدارة الصلاحيات والمشرفين</div>
+          <button class="btn btn-primary" onclick="openAddAdmin()">+ إضافة مشرف</button>
+        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>الاسم</th><th>المستخدم</th><th>الدور</th><th>المنطقة</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+          <tbody id="admins-table"></tbody>
+        </table></div>
+      </div>
+
+      <!-- RIDES -->
+      <div class="page" id="pg-rides">
+        <div class="filter-row">
+          <select class="filter-select" id="ride-status-filter" onchange="filterRides()">
+            <option value="all">كل الرحلات</option>
+            <option value="completed">✅ مكتملة</option>
+            <option value="in_ride">🟢 جارية</option>
+            <option value="cancelled">❌ ملغية</option>
+          </select>
+        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>العميل</th><th>السائق</th><th>من</th><th>إلى</th><th>الحالة</th><th>السعر</th><th>الوقت</th></tr></thead>
+          <tbody id="rides-table"></tbody>
+        </table></div>
+      </div>
+
+      <!-- SOS -->
+      <div class="page" id="pg-sos">
+        <div id="sos-list"><div style="text-align:center;padding:40px;color:var(--green);font-size:16px;font-weight:700;">✅ لا توجد حالات طوارئ حالياً</div></div>
+      </div>
+
+      <!-- PTT PAGE -->
+      <div class="page" id="pg-ptt">
+        <div class="ptt-panel" style="max-width:500px;margin:0 auto 20px;">
+          <div style="font-size:17px;font-weight:700;color:var(--gold-l);margin-bottom:4px;">🎙️ واكي توكي الإدارة</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:4px;" id="ptt-status-main">جاهز للبث</div>
+          <button class="ptt-big" id="ptt-main"
+            onmousedown="broadcastStart()" onmouseup="broadcastStop()"
+            ontouchstart="broadcastStart(event)" ontouchend="broadcastStop()">📢</button>
+          <div style="font-size:12px;color:rgba(255,255,255,0.3);">اضغط مع الاستمرار للبث على الكل</div>
+        </div>
+        <div class="card">
+          <div class="card-title">📞 استدعاء سائق بعينه</div>
+          <div class="filter-row">
+            <select class="filter-select" id="call-driver-select" style="flex:1;"><option value="">اختار سائق...</option></select>
+            <button class="btn btn-call" onclick="callSpecificDriver()">📞 استدعاء</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAYMENTS -->
+      <div class="page" id="pg-payments">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div style="font-size:15px;font-weight:700;">💰 نظام دفع السائقين</div>
+        </div>
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-title">⚙️ تحديد نظام الدفع لسائق</div>
+          <div class="form-grid">
+            <div><label class="inp-label">السائق</label><select class="inp" id="pay-driver-sel"><option value="">اختار سائق...</option></select></div>
+            <div>
+              <label class="inp-label">نظام الدفع</label>
+              <select class="inp" id="pay-type" onchange="togglePayAmount()">
+                <option value="fixed">مبلغ ثابت يومي</option>
+                <option value="percentage">نسبة من كل رحلة</option>
+              </select>
+            </div>
+            <div id="pay-amount-wrap"><label class="inp-label">المبلغ اليومي (جنيه)</label><input class="inp" type="number" id="pay-amount" placeholder="10"></div>
+            <div id="pay-percent-wrap" style="display:none;"><label class="inp-label">النسبة (%)</label><input class="inp" type="number" id="pay-percent" placeholder="15" min="1" max="50"></div>
+          </div>
+          <button class="btn btn-primary" onclick="savePaymentConfig()" style="margin-top:12px;">💾 حفظ نظام الدفع</button>
+        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>السائق</th><th>نظام الدفع</th><th>القيمة</th><th>إجمالي المدفوع</th><th>آخر دفع</th></tr></thead>
+          <tbody id="payments-table"></tbody>
+        </table></div>
+      </div>
+
+      <!-- PARTNERS -->
+      <div class="page" id="pg-partners">
+        <div class="filter-row">
+          <select class="filter-select" id="partner-type-filter" onchange="filterPartners()">
+            <option value="all">كل الشركاء</option>
+            <option value="workshop">🔧 ورش</option>
+            <option value="parts_shop">⚙️ قطع غيار</option>
+            <option value="company">🏢 شركات</option>
+          </select>
+          <select class="filter-select" id="partner-status-filter" onchange="filterPartners()">
+            <option value="all">كل الحالات</option>
+            <option value="pending">⏳ انتظار</option>
+            <option value="approved">✅ معتمد</option>
+          </select>
+        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>الاسم</th><th>النوع</th><th>الموبايل</th><th>العنوان</th><th>الحالة</th><th>الخصم</th><th>الإجراءات</th></tr></thead>
+          <tbody id="partners-table"></tbody>
+        </table></div>
+      </div>
+
+      <!-- DISCOUNTS -->
+      <div class="page" id="pg-discounts">
+        <div class="card">
+          <div class="card-title">🏷️ تحديد نسب الخصم للشركاء</div>
+          <div class="form-grid">
+            <div><label class="inp-label">الشريك</label><select class="inp" id="disc-partner-sel"><option value="">اختار شريك...</option></select></div>
+            <div><label class="inp-label">نسبة الخصم (%)</label><input class="inp" type="number" id="disc-percent" placeholder="10" min="0" max="100"></div>
+            <div class="form-full"><label class="inp-label">ملاحظات</label><input class="inp" id="disc-note" placeholder="سبب الخصم..."></div>
+          </div>
+          <button class="btn btn-primary" onclick="saveDiscount()" style="margin-top:12px;">💾 حفظ الخصم</button>
+        </div>
+        <div class="table-wrap" style="margin-top:14px;"><table>
+          <thead><tr><th>الشريك</th><th>النوع</th><th>الخصم</th><th>تاريخ التحديث</th></tr></thead>
+          <tbody id="discounts-table"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ERP -->
+      <div class="page" id="pg-erp">
+        <div class="erp-tabs">
+          <button class="etab active" onclick="switchErp('erp-employees',this)">👥 الموظفين</button>
+          <button class="etab" onclick="switchErp('erp-salary',this)">💰 المرتبات</button>
+          <button class="etab" onclick="switchErp('erp-expenses',this)">📤 المصروفات</button>
+          <button class="etab" onclick="switchErp('erp-revenue',this)">📥 الإيرادات</button>
+        </div>
+        <div id="erp-employees" class="erp-section">
+          <div style="display:flex;justify-content:space-between;margin-bottom:14px;">
+            <div style="font-size:15px;font-weight:700;">👥 الموظفين</div>
+            <button class="btn btn-primary" onclick="openAddEmployee()">+ إضافة موظف</button>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>الاسم</th><th>الوظيفة</th><th>الموبايل</th><th>الراتب</th><th>تاريخ التعيين</th><th>الإجراءات</th></tr></thead>
+            <tbody id="employees-table"></tbody>
+          </table></div>
+        </div>
+        <div id="erp-salary" class="erp-section" style="display:none;">
+          <div class="card"><div class="card-title">💰 مسير الرواتب</div><div style="text-align:center;padding:32px;color:var(--text3);">جاري تحميل بيانات الرواتب...</div></div>
+        </div>
+        <div id="erp-expenses" class="erp-section" style="display:none;">
+          <button class="btn btn-primary" onclick="openAddExpense()" style="margin-bottom:14px;">+ إضافة مصروف</button>
+          <div class="table-wrap"><table>
+            <thead><tr><th>البند</th><th>المبلغ</th><th>التاريخ</th><th>المسؤول</th></tr></thead>
+            <tbody id="expenses-table"></tbody>
+          </table></div>
+        </div>
+        <div id="erp-revenue" class="erp-section" style="display:none;">
+          <div class="card"><div class="card-title">📥 الإيرادات</div><div style="text-align:center;padding:32px;color:var(--text3);">جاري تحميل بيانات الإيرادات...</div></div>
+        </div>
+      </div>
+
+      <!-- REPORTS -->
+      <div class="page" id="pg-reports">
+        <div class="card"><div class="card-title">📈 التقارير</div><div style="text-align:center;padding:40px;color:var(--text3);">التقارير التفصيلية قريباً...</div></div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page" id="pg-settings">
+        <div class="card">
+          <div class="card-title">⚙️ إعدادات النظام</div>
+          <div class="form-grid">
+            <div><label class="inp-label">اسم المنصة</label><input class="inp" value="الغفير" id="set-name"></div>
+            <div><label class="inp-label">رقم الدعم</label><input class="inp" id="set-phone" placeholder="01xxxxxxxxx"></div>
+            <div><label class="inp-label">الاشتراك اليومي (جنيه)</label><input class="inp" type="number" id="set-sub" value="10"></div>
+            <div><label class="inp-label">مدة انتهاء QR (ثانية)</label><input class="inp" type="number" id="set-qr" value="300"></div>
+          </div>
+          <button class="btn btn-primary" style="margin-top:14px;" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main-area -->
+</div><!-- /admin-app -->
+
+<!-- ADD ADMIN MODAL -->
+<div class="modal-ov" id="modal-admin">
+  <div class="modal-box">
+    <div class="modal-title">➕ إضافة مشرف جديد <button class="modal-close" onclick="closeModal('modal-admin')">✕</button></div>
+    <div class="form-grid">
+      <div><label class="inp-label">الاسم الكامل</label><input class="inp" id="new-admin-name" placeholder="الاسم"></div>
+      <div><label class="inp-label">اسم المستخدم</label><input class="inp" id="new-admin-user" placeholder="username"></div>
+      <div><label class="inp-label">كلمة المرور</label><input class="inp" type="password" id="new-admin-pass" placeholder="••••••••"></div>
+      <div><label class="inp-label">رقم الموبايل</label><input class="inp" id="new-admin-phone" placeholder="01xxxxxxxxx"></div>
+      <div>
+        <label class="inp-label">الدور</label>
+        <select class="inp" id="new-admin-role">
+          <option value="region_manager">مدير منطقة</option>
+          <option value="supervisor">مشرف منطقة</option>
+          <option value="street_monitor">متابع شارع</option>
+        </select>
+      </div>
+      <div><label class="inp-label">المنطقة</label><input class="inp" id="new-admin-region" placeholder="المنطقة"></div>
+    </div>
+    <button class="btn btn-primary" onclick="saveNewAdmin()" style="width:100%;margin-top:14px;padding:13px;">✅ إضافة المشرف</button>
+  </div>
+</div>
+
+<!-- EDIT DRIVER PAYMENT MODAL -->
+<div class="modal-ov" id="modal-pay-drv">
+  <div class="modal-box">
+    <div class="modal-title">💰 تعديل نظام دفع السائق <button class="modal-close" onclick="closeModal('modal-pay-drv')">✕</button></div>
+    <input type="hidden" id="pay-drv-uid">
+    <div class="form-grid">
+      <div>
+        <label class="inp-label">نظام الدفع</label>
+        <select class="inp" id="pay-drv-type" onchange="togglePayDrv()">
+          <option value="fixed">مبلغ ثابت يومي</option>
+          <option value="percentage">نسبة من كل رحلة</option>
+        </select>
+      </div>
+      <div id="pay-drv-amount-wrap"><label class="inp-label">المبلغ (جنيه)</label><input class="inp" type="number" id="pay-drv-amount" placeholder="10"></div>
+      <div id="pay-drv-percent-wrap" style="display:none;"><label class="inp-label">النسبة (%)</label><input class="inp" type="number" id="pay-drv-percent" placeholder="15"></div>
+    </div>
+    <button class="btn btn-primary" onclick="saveDriverPayment()" style="width:100%;margin-top:14px;padding:13px;">💾 حفظ</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, doc, getDoc, getDocs, addDoc, updateDoc,
+  deleteDoc, onSnapshot, query, where, orderBy, limit, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyBwc1mp1NRakXfeSkDy4_ntHu38K5L1hIg",
+  authDomain:"elghafeer-28543.firebaseapp.com",
+  projectId:"elghafeer-28543",
+  storageBucket:"elghafeer-28543.firebasestorage.app",
+  messagingSenderId:"862588981889",
+  appId:"1:862588981889:web:36f5cfc3d1e9bcd8289f90"
+});
+const db = getFirestore(app);
+
+let currentAdmin = null;
+let allDrivers = [], allClients = [], allAdmins = [], allRides = [], allPartners = [];
+let bRec = null;
+
+// ===== ROLES =====
+const ROLE_LABELS = {
+  superadmin:     { label:'سوبر أدمن', badge:'b-super' },
+  region_manager: { label:'مدير منطقة', badge:'b-manager' },
+  supervisor:     { label:'مشرف منطقة', badge:'b-supervisor' },
+  street_monitor: { label:'متابع شارع', badge:'b-monitor' },
+  driver:         { label:'سائق', badge:'b-driver' },
+  client:         { label:'عميل', badge:'b-client' },
+  partner:        { label:'شريك', badge:'b-partner' }
+};
+
+const CAN_APPROVE  = ['superadmin','region_manager','supervisor'];
+const CAN_MANAGE   = ['superadmin','region_manager'];
+const CAN_SUPER    = ['superadmin'];
+
+function canDo(action) {
+  if (!currentAdmin) return false;
+  if (action === 'approve') return CAN_APPROVE.includes(currentAdmin.role);
+  if (action === 'manage')  return CAN_MANAGE.includes(currentAdmin.role);
+  if (action === 'super')   return CAN_SUPER.includes(currentAdmin.role);
+  return false;
+}
+
+// ===== LOGIN =====
+window.adminLogin = async () => {
+  const u = document.getElementById('l-user').value.trim();
+  const p = document.getElementById('l-pass').value.trim();
+  if (!u || !p) { notif('أدخل البيانات','error'); return; }
+  try {
+    const snap = await getDocs(query(collection(db,'admins'), where('username','==',u), where('password','==',p), limit(1)));
+    if (snap.empty) { notif('بيانات خاطئة','error'); return; }
+    currentAdmin = { id: snap.docs[0].id, ...snap.docs[0].data() };
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-app').style.display = 'block';
+    setupAdminUI();
+    loadAll();
+    notif('✅ أهلاً ' + currentAdmin.name,'success');
+  } catch(e) { notif('خطأ في الاتصال','error'); }
+};
+
+function setupAdminUI() {
+  document.getElementById('su-name').textContent = currentAdmin.name || 'الإدارة';
+  document.getElementById('su-role').textContent = ROLE_LABELS[currentAdmin.role]?.label || currentAdmin.role;
+  const badge = document.getElementById('su-badge');
+  badge.textContent = currentAdmin.role;
+  badge.className = 'su-badge role-' + (currentAdmin.role === 'superadmin' ? 'super' : currentAdmin.role === 'region_manager' ? 'manager' : 'supervisor');
+  // Hide ERP for non-managers
+  if (!canDo('manage')) {
+    document.getElementById('nav-erp-section').style.display = 'none';
+    document.querySelector('[onclick*="pg-erp"]')?.style.setProperty('display','none');
+    document.querySelector('[onclick*="pg-reports"]')?.style.setProperty('display','none');
+  }
+  if (!canDo('super')) {
+    document.querySelector('[onclick*="pg-admins"]')?.style.setProperty('display','none');
+    document.querySelector('[onclick*="pg-settings"]')?.style.setProperty('display','none');
+  }
+}
+
+window.adminLogout = () => { currentAdmin = null; location.reload(); };
+
+// ===== LOAD ALL =====
+function loadAll() {
+  loadDrivers(); loadClients(); loadAdmins(); loadRides(); loadSOS(); loadPartners();
+}
+
+// ===== DRIVERS =====
+function loadDrivers() {
+  onSnapshot(collection(db,'drivers'), snap => {
+    allDrivers = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+    updateStats();
+    renderDrivers(allDrivers);
+    populateDriverSelects();
+  });
+}
+
+function renderDrivers(list) {
+  document.getElementById('drivers-table').innerHTML = list.map(d => `
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:8px;">
+        <div class="av">${d.photoURL?`<img src="${d.photoURL}">`:'🛺'}</div>
+        <div><div style="font-weight:700;">${d.name||'—'}</div><div style="font-size:11px;color:var(--text3);">${d.plate||''}</div></div>
+      </div></td>
+      <td>${d.phone||'—'}</td>
+      <td><span class="badge ${d.status==='approved'?'b-approved':d.status==='pending'?'b-pending':d.status==='banned'?'b-banned':'b-rejected'}">${statusAr(d.status)}</span>
+          ${d.isOnline?'<span class="badge b-online" style="margin-right:4px;">🟢</span>':''}</td>
+      <td><b>${d.workDays||0}</b> / 180</td>
+      <td>⭐ ${d.rating?(+d.rating).toFixed(1):'5.0'}</td>
+      <td><span class="badge ${d.paymentType==='percentage'?'b-percent':'b-fixed'}">${d.paymentType==='percentage'?(d.paymentValue||'—')+'%':(d.paymentValue||'10')+' ج'}</span></td>
+      <td><div style="display:flex;gap:5px;flex-wrap:wrap;">
+        ${d.status==='pending'&&canDo('approve')?`<button class="btn btn-ok" onclick="approveDriver('${d.id}')">✅ اعتماد</button><button class="btn btn-rej" onclick="rejectDriver('${d.id}')">❌</button>`:''}
+        ${d.status==='approved'?`<button class="btn btn-call" onclick="callDriver('${d.id}','${d.name||''}')">📞</button>`:''}
+        ${canDo('manage')?`<button class="btn btn-pay" onclick="openPayDriver('${d.id}','${d.paymentType||'fixed'}',${d.paymentValue||10})">💰</button>`:''}
+        ${canDo('manage')&&d.status==='approved'?`<button class="btn btn-ban" onclick="banDriver('${d.id}')">🚫</button>`:''}
+      </div></td>
+    </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text3);">لا يوجد سائقين</td></tr>';
+}
+
+window.filterDrivers = () => {
+  const q = document.getElementById('drv-search').value.toLowerCase();
+  const st = document.getElementById('drv-status-filter').value;
+  const filtered = allDrivers.filter(d =>
+    (st === 'all' || d.status === st) &&
+    ((d.name||'').toLowerCase().includes(q) || (d.phone||'').includes(q))
+  );
+  renderDrivers(filtered);
+};
+
+window.approveDriver = async id => { await updateDoc(doc(db,'drivers',id),{status:'approved',approvedAt:serverTimestamp(),approvedBy:currentAdmin.id}); notif('✅ تم اعتماد السائق','success'); };
+window.rejectDriver  = async id => { await updateDoc(doc(db,'drivers',id),{status:'rejected'}); notif('تم رفض الطلب','info'); };
+window.banDriver     = async id => { await updateDoc(doc(db,'drivers',id),{status:'banned',isOnline:false}); notif('🚫 تم إيقاف السائق','info'); };
+window.callDriver    = async (id,name) => {
+  await updateDoc(doc(db,'drivers',id),{incomingCall:{from:currentAdmin.name||'الإدارة',at:new Date().toISOString()}});
+  notif('📞 تم استدعاء '+name,'success');
+};
+
+// ===== DRIVER PAYMENT =====
+window.openPayDriver = (uid, type, val) => {
+  document.getElementById('pay-drv-uid').value = uid;
+  document.getElementById('pay-drv-type').value = type;
+  document.getElementById('pay-drv-amount').value = type==='fixed' ? val : '';
+  document.getElementById('pay-drv-percent').value = type==='percentage' ? val : '';
+  togglePayDrv();
+  openModal('modal-pay-drv');
+};
+window.togglePayDrv = () => {
+  const t = document.getElementById('pay-drv-type').value;
+  document.getElementById('pay-drv-amount-wrap').style.display = t==='fixed' ? 'block' : 'none';
+  document.getElementById('pay-drv-percent-wrap').style.display = t==='percentage' ? 'block' : 'none';
+};
+window.saveDriverPayment = async () => {
+  const uid = document.getElementById('pay-drv-uid').value;
+  const type = document.getElementById('pay-drv-type').value;
+  const val = type==='fixed' ? +document.getElementById('pay-drv-amount').value : +document.getElementById('pay-drv-percent').value;
+  await updateDoc(doc(db,'drivers',uid),{paymentType:type,paymentValue:val});
+  notif('✅ تم حفظ نظام الدفع','success');
+  closeModal('modal-pay-drv');
+};
+window.togglePayAmount = () => {
+  const t = document.getElementById('pay-type').value;
+  document.getElementById('pay-amount-wrap').style.display = t==='fixed'?'block':'none';
+  document.getElementById('pay-percent-wrap').style.display = t==='percentage'?'block':'none';
+};
+window.savePaymentConfig = async () => {
+  const uid = document.getElementById('pay-driver-sel').value;
+  const type = document.getElementById('pay-type').value;
+  const val = type==='fixed' ? +document.getElementById('pay-amount').value : +document.getElementById('pay-percent').value;
+  if (!uid) { notif('اختار سائق','error'); return; }
+  await updateDoc(doc(db,'drivers',uid),{paymentType:type,paymentValue:val});
+  notif('✅ تم الحفظ','success');
+};
+
+// ===== CLIENTS =====
+function loadClients() {
+  onSnapshot(collection(db,'clients'), snap => {
+    allClients = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+    updateStats();
+    renderClients(allClients);
+  });
+}
+function renderClients(list) {
+  document.getElementById('clients-table').innerHTML = list.map(c => `
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:8px;"><div class="av">🧑</div><div style="font-weight:700;">${c.name||'—'}</div></div></td>
+      <td>${c.phone||'—'}</td>
+      <td><span class="badge ${c.accountType==='family'?'b-client':'b-driver'}">${c.accountType==='family'?'👨‍👩‍👧 عائلي':'🧑 فردي'}</span></td>
+      <td>${c.totalRides||0}</td>
+      <td>${c.createdAt?.toDate?.().toLocaleDateString('ar-EG')||'—'}</td>
+      <td>${canDo('manage')?`<button class="btn btn-ban" onclick="banClient('${c.id}')">🚫 إيقاف</button>`:''}</td>
+    </tr>`).join('') || '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text3);">لا يوجد عملاء</td></tr>';
+}
+window.filterClients = () => {
+  const q = document.getElementById('cli-search').value.toLowerCase();
+  renderClients(allClients.filter(c => (c.name||'').toLowerCase().includes(q)||(c.phone||'').includes(q)));
+};
+window.banClient = async id => { notif('⚠️ تم إيقاف العميل','info'); };
+
+// ===== ADMINS =====
+function loadAdmins() {
+  onSnapshot(collection(db,'admins'), snap => {
+    allAdmins = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+    renderAdmins();
+  });
+}
+function renderAdmins() {
+  document.getElementById('admins-table').innerHTML = allAdmins.map(a => `
+    <tr>
+      <td><div style="font-weight:700;">${a.name||'—'}</div></td>
+      <td>${a.username||'—'}</td>
+      <td><span class="badge ${ROLE_LABELS[a.role]?.badge||'b-driver'}">${ROLE_LABELS[a.role]?.label||a.role}</span></td>
+      <td>${a.region==='all'?'كل المناطق':a.region||'—'}</td>
+      <td><span class="badge ${a.isActive?'b-approved':'b-banned'}">${a.isActive?'✅ نشط':'⛔ موقوف'}</span></td>
+      <td><div style="display:flex;gap:5px;">
+        ${canDo('super')?`<button class="btn btn-rej" onclick="deleteAdmin('${a.id}')">🗑️</button>`:''}
+        ${canDo('super')?`<button class="btn btn-ban" onclick="toggleAdmin('${a.id}',${!a.isActive})">${a.isActive?'إيقاف':'تفعيل'}</button>`:''}
+      </div></td>
+    </tr>`).join('') || '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text3);">لا يوجد مشرفين</td></tr>';
+}
+window.openAddAdmin = () => openModal('modal-admin');
+window.saveNewAdmin = async () => {
+  const name   = document.getElementById('new-admin-name').value.trim();
+  const user   = document.getElementById('new-admin-user').value.trim();
+  const pass   = document.getElementById('new-admin-pass').value.trim();
+  const phone  = document.getElementById('new-admin-phone').value.trim();
+  const role   = document.getElementById('new-admin-role').value;
+  const region = document.getElementById('new-admin-region').value.trim();
+  if (!name||!user||!pass) { notif('أدخل كل البيانات','error'); return; }
+  await addDoc(collection(db,'admins'),{name,username:user,password:pass,phone,role,region:region||'all',isActive:true,createdBy:currentAdmin.id,createdAt:serverTimestamp()});
+  notif('✅ تم إضافة المشرف','success');
+  closeModal('modal-admin');
+  ['new-admin-name','new-admin-user','new-admin-pass','new-admin-phone','new-admin-region'].forEach(id=>document.getElementById(id).value='');
+};
+window.deleteAdmin = async id => { if(confirm('تأكيد الحذف؟')) await deleteDoc(doc(db,'admins',id)); };
+window.toggleAdmin = async (id,val) => { await updateDoc(doc(db,'admins',id),{isActive:val}); notif(val?'تم التفعيل':'تم الإيقاف','info'); };
+
+// ===== RIDES =====
+function loadRides() {
+  onSnapshot(collection(db,'rides'), snap => {
+    allRides = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+    updateStats();
+    renderRides(allRides);
+    renderLiveRides();
+    renderRecentRides();
+  });
+}
+function renderRides(list) {
+  document.getElementById('rides-table').innerHTML = list.slice().reverse().slice(0,50).map(r => `
+    <tr>
+      <td>${r.clientName||'—'}</td><td>${r.driverName||'—'}</td>
+      <td>${r.from||'—'}</td><td>${r.to||'—'}</td>
+      <td><span class="badge ${r.status==='completed'?'b-approved':r.status==='in_ride'?'b-online':'b-pending'}">${statusAr(r.status)}</span></td>
+      <td>${r.price||15} ج</td>
+      <td style="font-size:11px;">${r.createdAt?.toDate?.().toLocaleString('ar-EG')||'—'}</td>
+    </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text3);">لا توجد رحلات</td></tr>';
+}
+window.filterRides = () => {
+  const st = document.getElementById('ride-status-filter').value;
+  renderRides(st==='all' ? allRides : allRides.filter(r=>r.status===st));
+};
+function renderLiveRides() {
+  const live = allRides.filter(r=>['in_ride','driver_arrived','accepted'].includes(r.status));
+  const el = document.getElementById('live-list');
+  if (!live.length) { el.innerHTML='<div style="text-align:center;padding:32px;color:var(--text3);">لا توجد رحلات حية الآن</div>'; return; }
+  el.innerHTML = live.map(r=>`
+    <div class="live-ride">
+      <div class="live-ride-icon">🚗</div>
+      <div style="flex:1;">
+        <div style="font-weight:700;font-size:14px;">${r.clientName||'—'} ← ${r.driverName||'—'}</div>
+        <div style="font-size:12px;color:var(--text3);">${r.from} → ${r.to}</div>
+      </div>
+      <span class="badge b-online">${statusAr(r.status)}</span>
+    </div>`).join('');
+}
+function renderRecentRides() {
+  document.getElementById('recent-rides').innerHTML = allRides.slice().reverse().slice(0,8).map(r=>`
+    <tr>
+      <td>${r.clientName||'—'}</td><td>${r.driverName||'—'}</td>
+      <td>${r.from||'—'}</td><td>${r.to||'—'}</td>
+      <td><span class="badge ${r.status==='completed'?'b-approved':r.status==='in_ride'?'b-online':'b-pending'}">${statusAr(r.status)}</span></td>
+      <td style="font-size:11px;">${r.createdAt?.toDate?.().toLocaleString('ar-EG')||'—'}</td>
+    </tr>`).join('');
+}
+
+// ===== SOS =====
+function loadSOS() {
+  onSnapshot(collection(db,'sos'), snap => {
+    const all = snap.docs.map(d=>({id:d.id,...d.data()}));
+    const today = new Date().toDateString();
+    document.getElementById('st-sos').textContent = all.filter(s=>s.createdAt?.toDate?.().toDateString()===today).length;
+    const el = document.getElementById('sos-list');
+    if (!all.length) { el.innerHTML='<div style="text-align:center;padding:40px;color:var(--green);font-size:16px;font-weight:700;">✅ لا توجد حالات طوارئ</div>'; return; }
+    el.innerHTML = all.slice().reverse().map(s=>`
+      <div class="sos-alert">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font-size:28px;">🚨</span>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:700;color:var(--red);">طوارئ — ${s.clientName||'عميل'}</div>
+            <div style="font-size:12px;color:var(--text3);">${s.createdAt?.toDate?.().toLocaleString('ar-EG')||'الآن'}</div>
+            <div style="font-size:13px;">📍 ${s.lat?.toFixed(5)||'?'}, ${s.lng?.toFixed(5)||'?'}</div>
+          </div>
+          ${canDo('approve')?`<button class="btn btn-ok" onclick="resolveSOS('${s.id}')">✅ تم التعامل</button>`:''}
+        </div>
+      </div>`).join('');
+  });
+}
+window.resolveSOS = async id => { await updateDoc(doc(db,'sos',id),{resolved:true,resolvedBy:currentAdmin.id,resolvedAt:serverTimestamp()}); notif('✅ تم التعامل مع الحالة','success'); };
+
+// ===== PARTNERS =====
+function loadPartners() {
+  onSnapshot(collection(db,'partners'), snap => {
+    allPartners = snap.docs.map(d=>({id:d.id,...d.data()}));
+    updateStats();
+    renderPartners(allPartners);
+    populatePartnerSelect();
+  });
+}
+function renderPartners(list) {
+  const icons = { workshop:'🔧', parts_shop:'⚙️', company:'🏢' };
+  document.getElementById('partners-table').innerHTML = list.map(p=>`
+    <tr>
+      <td><div style="font-weight:700;">${p.name||'—'}</div></td>
+      <td>${icons[p.type]||'🤝'} ${p.type==='workshop'?'ورشة':p.type==='parts_shop'?'قطع غيار':'شركة'}</td>
+      <td>${p.phone||'—'}</td>
+      <td>${p.address||'—'}</td>
+      <td><span class="badge ${p.status==='approved'?'b-approved':'b-pending'}">${p.status==='approved'?'✅ معتمد':'⏳ انتظار'}</span></td>
+      <td>${p.discount||0}%</td>
+      <td><div style="display:flex;gap:5px;">
+        ${p.status==='pending'&&canDo('approve')?`<button class="btn btn-ok" onclick="approvePartner('${p.id}')">✅</button><button class="btn btn-rej" onclick="rejectPartner('${p.id}')">❌</button>`:''}
+        ${canDo('super')?`<button class="btn btn-pay" onclick="openDiscountModal('${p.id}')">🏷️</button>`:''}
+      </div></td>
+    </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text3);">لا يوجد شركاء</td></tr>';
+}
+window.filterPartners = () => {
+  const type = document.getElementById('partner-type-filter').value;
+  const st   = document.getElementById('partner-status-filter').value;
+  renderPartners(allPartners.filter(p=>(type==='all'||p.type===type)&&(st==='all'||p.status===st)));
+};
+window.approvePartner = async id => { await updateDoc(doc(db,'partners',id),{status:'approved',approvedBy:currentAdmin.id}); notif('✅ تم اعتماد الشريك','success'); };
+window.rejectPartner  = async id => { await updateDoc(doc(db,'partners',id),{status:'rejected'}); };
+window.openDiscountModal = (id) => {
+  document.getElementById('disc-partner-sel').value = id;
+  showPage('pg-discounts', document.querySelector('[onclick*="pg-discounts"]'));
+};
+
+// ===== DISCOUNTS =====
+window.saveDiscount = async () => {
+  const id  = document.getElementById('disc-partner-sel').value;
+  const pct = +document.getElementById('disc-percent').value;
+  const note= document.getElementById('disc-note').value;
+  if (!id) { notif('اختار شريك','error'); return; }
+  await updateDoc(doc(db,'partners',id),{discount:pct,discountNote:note,discountBy:currentAdmin.id,discountAt:serverTimestamp()});
+  notif('✅ تم حفظ الخصم','success');
+  renderDiscountsTable();
+};
+function renderDiscountsTable() {
+  const icons = { workshop:'🔧', parts_shop:'⚙️', company:'🏢' };
+  document.getElementById('discounts-table').innerHTML = allPartners.filter(p=>p.discount>0).map(p=>`
+    <tr>
+      <td style="font-weight:700;">${p.name||'—'}</td>
+      <td>${icons[p.type]||''} ${p.type||'—'}</td>
+      <td><b>${p.discount||0}%</b></td>
+      <td style="font-size:11px;">${p.discountAt?.toDate?.().toLocaleDateString('ar-EG')||'—'}</td>
+    </tr>`).join('') || '<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--text3);">لا توجد خصومات محددة</td></tr>';
+}
+
+// ===== ERP =====
+window.switchErp = (id, btn) => {
+  document.querySelectorAll('.erp-section').forEach(s=>s.style.display='none');
+  document.querySelectorAll('.etab').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).style.display='block';
+  btn.classList.add('active');
+};
+window.openAddEmployee = () => notif('جاري التطوير','info');
+window.openAddExpense  = () => notif('جاري التطوير','info');
+
+// ===== STATS =====
+function updateStats() {
+  const today = new Date().toDateString();
+  const approved = allDrivers.filter(d=>d.status==='approved');
+  document.getElementById('st-drivers').textContent     = approved.length;
+  document.getElementById('st-online').textContent      = approved.filter(d=>d.isOnline).length;
+  document.getElementById('st-pending').textContent     = allDrivers.filter(d=>d.status==='pending').length;
+  document.getElementById('st-clients').textContent     = allClients.length;
+  document.getElementById('st-partners').textContent    = allPartners.filter(p=>p.status==='approved').length;
+  const todayRides = allRides.filter(r=>r.createdAt?.toDate?.().toDateString()===today);
+  document.getElementById('st-rides-today').textContent = todayRides.length;
+  document.getElementById('st-revenue').textContent     = todayRides.filter(r=>r.status==='completed').length * 15;
+}
+
+// ===== HELPERS =====
+function populateDriverSelects() {
+  const opts = allDrivers.filter(d=>d.status==='approved').map(d=>`<option value="${d.id}">${d.name} — ${d.phone}</option>`).join('');
+  ['pay-driver-sel','call-driver-select','pay-drv-uid'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&el.tagName==='SELECT') el.innerHTML='<option value="">اختار سائق...</option>'+opts;
+  });
+}
+function populatePartnerSelect() {
+  document.getElementById('disc-partner-sel').innerHTML = '<option value="">اختار شريك...</option>' +
+    allPartners.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+}
+function statusAr(s){return{pending:'⏳ انتظار',approved:'✅ معتمد',rejected:'❌ مرفوض',banned:'🚫 موقوف',searching:'بحث',accepted:'قُبلت',driver_arrived:'السائق وصل',in_ride:'🟢 جارية',completed:'✅ مكتملة',cancelled:'❌ ملغية'}[s]||s;}
+
+// ===== PTT BROADCAST =====
+window.broadcastStart = async (e) => {
+  if(e) e.preventDefault();
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    bRec = new MediaRecorder(stream); bRec.start();
+    ['ptt-home','ptt-main'].forEach(id=>document.getElementById(id)?.classList.add('active'));
+    ['ptt-status-home','ptt-status-main'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='🔴 جاري البث...';});
+    allDrivers.filter(d=>d.isOnline).forEach(async d => {
+      await updateDoc(doc(db,'drivers',d.id),{incomingCall:{from:currentAdmin.name||'الإدارة',at:new Date().toISOString()}});
+    });
+    notif('📢 البث جارٍ...','info');
+  } catch(e) { notif('تعذر المايك','error'); }
+};
+window.broadcastStop = () => {
+  if(bRec&&bRec.state!=='inactive'){bRec.stop();bRec.stream.getTracks().forEach(t=>t.stop());}
+  ['ptt-home','ptt-main'].forEach(id=>document.getElementById(id)?.classList.remove('active'));
+  ['ptt-status-home','ptt-status-main'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='اضغط للبث';});
+};
+window.callSpecificDriver = () => {
+  const id = document.getElementById('call-driver-select').value;
+  if (!id) { notif('اختار سائق','error'); return; }
+  const drv = allDrivers.find(d=>d.id===id);
+  if (drv) callDriver(id, drv.name);
+};
+
+// ===== SETTINGS =====
+window.saveSettings = () => notif('✅ تم حفظ الإعدادات','success');
+
+// ===== MODAL =====
+window.openModal  = id => document.getElementById(id).classList.add('show');
+window.closeModal = id => document.getElementById(id).classList.remove('show');
+window.openAddDriver = () => notif('استخدم صفحة تسجيل السائق المباشرة','info');
+
+// ===== PAGES =====
+window.showPage = (id, el) => {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(el) el.classList.add('active');
+  const titles = {
+    'pg-home':'الرئيسية','pg-live':'رحلات حية','pg-drivers':'السائقين',
+    'pg-clients':'العملاء','pg-admins':'الإدارة والمشرفين','pg-rides':'الرحلات',
+    'pg-sos':'طوارئ SOS','pg-ptt':'واكي توكي','pg-payments':'المدفوعات',
+    'pg-partners':'الشركاء','pg-discounts':'الخصومات','pg-erp':'ERP الشركة',
+    'pg-reports':'التقارير','pg-settings':'الإعدادات'
+  };
+  document.getElementById('page-title').textContent = titles[id] || '';
+  if(id==='pg-discounts') renderDiscountsTable();
+};
+
+// ===== NOTIF =====
+window.notif = (msg,type='info') => {
+  const n=document.getElementById('notif');
+  n.textContent=msg; n.className=`notif notif-${type}`; n.style.display='block';
+  setTimeout(()=>n.style.display='none',3500);
+};
+</script>
+</body>
+</html>
