@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>الغفير — أمان وراحة نفسية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c9a84c;--gold-l:#e8c96a;--gold-d:#a07830;--gold-xl:#f5e199;
+  --silver:#8a9ab0;--silver-l:#ccd4de;--silver-d:#5a6a7a;
+  --blue:#1a2e8a;--blue-d:#0f1d5e;--blue-l:#eef1fc;
+  --white:#ffffff;--offwhite:#f8f9fb;--glass:rgba(255,255,255,0.7);
+  --border:rgba(201,168,76,0.2);--border-s:rgba(138,154,176,0.2);
+  --text:#1a1a2e;--text2:#4a5568;--text3:#8a9ab0;
+  --shadow-g:0 8px 32px rgba(201,168,76,0.15);
+  --shadow-s:0 4px 24px rgba(26,46,138,0.08);
+  --r:20px;--r-sm:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Tajawal',sans-serif;background:var(--offwhite);color:var(--text);overflow-x:hidden;}
+
+/* GLASS TEXTURE */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse at 10% 0%,rgba(201,168,76,0.06) 0%,transparent 60%),
+    radial-gradient(ellipse at 90% 100%,rgba(26,46,138,0.05) 0%,transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+/* ===== NAV ===== */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:999;
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:12px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 2px 20px rgba(26,46,138,0.06);
+}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-logo img{width:38px;filter:drop-shadow(0 2px 8px rgba(201,168,76,0.4));}
+.nav-brand{font-family:'Cairo',sans-serif;font-size:20px;font-weight:900;color:var(--gold-d);}
+.nav-links{display:flex;gap:6px;}
+.nav-link{
+  padding:8px 16px;border-radius:var(--r-sm);
+  font-size:14px;font-weight:700;cursor:pointer;
+  text-decoration:none;transition:all 0.2s;
+  color:var(--text2);
+}
+.nav-link:hover{color:var(--gold-d);background:rgba(201,168,76,0.08);}
+.nav-cta{
+  background:linear-gradient(135deg,var(--gold),var(--gold-d));
+  color:#fff;padding:9px 20px;border-radius:var(--r-sm);
+  font-size:14px;font-weight:700;text-decoration:none;
+  box-shadow:0 4px 14px rgba(201,168,76,0.3);
+  transition:all 0.2s;
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,0.4);}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:100px 20px 60px;text-align:center;
+  position:relative;z-index:1;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(201,168,76,0.1);border:1px solid var(--border);
+  border-radius:50px;padding:6px 16px;
+  font-size:13px;font-weight:700;color:var(--gold-d);
+  margin-bottom:24px;
+  animation:fadeUp 0.6s 0.1s both;
+}
+.hero-badge-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:pulse2 2s infinite;}
+@keyframes pulse2{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+
+.hero-logo{
+  width:140px;height:140px;margin-bottom:24px;
+  filter:drop-shadow(0 12px 32px rgba(201,168,76,0.35));
+  animation:fadeUp 0.6s 0.2s both, floatLogo 4s ease-in-out 1s infinite;
+}
+@keyframes floatLogo{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+.hero-title{
+  font-family:'Cairo',sans-serif;
+  font-size:clamp(36px,8vw,64px);font-weight:900;
+  background:linear-gradient(135deg,var(--gold-d) 0%,var(--gold) 40%,var(--gold-xl) 60%,var(--gold-d) 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:fadeUp 0.6s 0.3s both, shimmer 4s linear 1s infinite;
+  line-height:1.1;margin-bottom:12px;
+}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+
+.hero-sub{
+  font-size:clamp(16px,3vw,22px);color:var(--text2);font-weight:400;
+  margin-bottom:36px;max-width:500px;line-height:1.6;
+  animation:fadeUp 0.6s 0.4s both;
+}
+.hero-sub b{color:var(--gold-d);font-weight:700;}
+
+.hero-btns{
+  display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
+  animation:fadeUp 0.6s 0.5s both;
+}
+.hero-btn{
+  display:flex;align-items:center;gap:10px;
+  padding:16px 28px;border-radius:var(--r);
+  font-family:'Tajawal',sans-serif;font-size:16px;font-weight:700;
+  cursor:pointer;text-decoration:none;transition:all 0.25s;border:none;
+}
+.hb-gold{
+  background:linear-gradient(135deg,var(--gold),var(--gold-d));
+  color:#fff;box-shadow:var(--shadow-g);
+}
+.hb-gold:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(201,168,76,0.4);}
+.hb-glass{
+  background:var(--glass);backdrop-filter:blur(10px);
+  border:1.5px solid var(--border);color:var(--gold-d);
+  box-shadow:var(--shadow-s);
+}
+.hb-glass:hover{background:#fff;border-color:var(--gold);transform:translateY(-2px);}
+.hb-silver{
+  background:rgba(138,154,176,0.1);
+  border:1.5px solid var(--border-s);color:var(--silver-d);
+}
+.hb-silver:hover{background:var(--silver-l);color:#fff;}
+
+/* HERO STATS */
+.hero-stats{
+  display:flex;flex-wrap:wrap;gap:16px;justify-content:center;
+  margin-top:48px;animation:fadeUp 0.6s 0.6s both;
+}
+.hstat{
+  background:var(--glass);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:var(--r);
+  padding:16px 24px;text-align:center;min-width:110px;
+  box-shadow:var(--shadow-s);
+}
+.hstat-num{font-size:26px;font-weight:900;color:var(--gold-d);}
+.hstat-lbl{font-size:12px;color:var(--text3);margin-top:3px;}
+
+/* SCROLL INDICATOR */
+.scroll-hint{
+  margin-top:48px;display:flex;flex-direction:column;align-items:center;
+  gap:6px;color:var(--text3);font-size:12px;
+  animation:fadeUp 0.6s 0.8s both;
+}
+.scroll-arrow{
+  width:24px;height:24px;border-right:2px solid var(--gold);
+  border-bottom:2px solid var(--gold);
+  transform:rotate(45deg);animation:bounce 2s ease-in-out infinite;
+}
+@keyframes bounce{0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(5px)}}
+
+/* ===== SECTIONS ===== */
+section{position:relative;z-index:1;padding:80px 20px;}
+.section-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(201,168,76,0.08);border:1px solid var(--border);
+  border-radius:50px;padding:5px 14px;
+  font-size:12px;font-weight:700;color:var(--gold-d);
+  margin-bottom:14px;
+}
+.section-title{
+  font-family:'Cairo',sans-serif;
+  font-size:clamp(26px,5vw,38px);font-weight:900;
+  color:var(--text);margin-bottom:10px;
+}
+.section-title span{color:var(--gold-d);}
+.section-sub{font-size:16px;color:var(--text3);max-width:480px;margin:0 auto 40px;line-height:1.6;}
+.center{text-align:center;}
+
+/* ===== HOW IT WORKS ===== */
+.how-wrap{max-width:900px;margin:0 auto;}
+.how-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;}
+.how-step{
+  background:var(--white);
+  border:1.5px solid var(--border-s);
+  border-radius:var(--r);padding:24px 18px;
+  text-align:center;position:relative;
+  box-shadow:var(--shadow-s);transition:all 0.3s;
+}
+.how-step:hover{border-color:var(--gold);box-shadow:var(--shadow-g);transform:translateY(-4px);}
+.how-step-num{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-d));
+  color:#fff;font-size:18px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;box-shadow:0 4px 14px rgba(201,168,76,0.3);
+}
+.how-step-icon{font-size:28px;margin-bottom:10px;}
+.how-step-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.how-step-desc{font-size:13px;color:var(--text3);line-height:1.5;}
+.how-connector{
+  display:none;
+  position:absolute;top:50%;right:-14px;
+  width:28px;height:2px;background:var(--gold);z-index:2;
+}
+@media(min-width:600px){.how-connector{display:block;}}
+
+/* ===== WHY US CARDS ===== */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:900px;margin:0 auto;}
+.why-card{
+  background:var(--white);
+  border:1.5px solid var(--border-s);
+  border-radius:var(--r);padding:24px;
+  box-shadow:var(--shadow-s);transition:all 0.3s;
+  position:relative;overflow:hidden;
+}
+.why-card::before{
+  content:'';position:absolute;top:0;right:0;
+  width:4px;height:100%;
+  background:linear-gradient(180deg,var(--gold),var(--gold-d));
+}
+.why-card:hover{border-color:var(--gold);box-shadow:var(--shadow-g);transform:translateY(-3px);}
+.why-icon{font-size:32px;margin-bottom:12px;}
+.why-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.why-desc{font-size:13px;color:var(--text3);line-height:1.6;}
+
+/* ===== FOR DRIVER / CLIENT ===== */
+.audience-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px;margin:0 auto;}
+@media(max-width:600px){.audience-grid{grid-template-columns:1fr;}}
+.audience-card{
+  border-radius:var(--r);padding:28px;
+  box-shadow:var(--shadow-s);transition:all 0.3s;
+}
+.aud-driver{
+  background:linear-gradient(135deg,#0f1d5e,#1a2e8a);
+  border:1.5px solid rgba(201,168,76,0.3);
+  color:#fff;
+}
+.aud-client{
+  background:linear-gradient(135deg,var(--gold-d),var(--gold));
+  border:1.5px solid rgba(201,168,76,0.3);
+  color:#fff;
+}
+.audience-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,0.15);}
+.aud-icon{font-size:40px;margin-bottom:14px;}
+.aud-title{font-size:20px;font-weight:900;margin-bottom:8px;}
+.aud-sub{font-size:14px;opacity:0.85;margin-bottom:18px;line-height:1.5;}
+.aud-list{list-style:none;}
+.aud-list li{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);
+  font-size:14px;
+}
+.aud-list li:last-child{border:none;}
+.aud-list li::before{content:'✓';font-weight:900;font-size:14px;flex-shrink:0;}
+.aud-btn{
+  display:block;text-align:center;
+  background:rgba(255,255,255,0.2);
+  border:1.5px solid rgba(255,255,255,0.4);
+  color:#fff;padding:12px 20px;border-radius:var(--r-sm);
+  font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;
+  text-decoration:none;margin-top:20px;transition:all 0.2s;
+}
+.aud-btn:hover{background:rgba(255,255,255,0.35);}
+
+/* ===== PARTNERS SECTION ===== */
+.partners-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;max-width:900px;margin:0 auto;}
+.partner-card{
+  background:var(--white);
+  border:1.5px solid var(--border-s);
+  border-radius:var(--r);padding:24px;text-align:center;
+  box-shadow:var(--shadow-s);transition:all 0.3s;
+  cursor:pointer;text-decoration:none;color:inherit;display:block;
+}
+.partner-card:hover{border-color:var(--gold);box-shadow:var(--shadow-g);transform:translateY(-4px);}
+.partner-icon{font-size:40px;margin-bottom:12px;}
+.partner-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.partner-desc{font-size:13px;color:var(--text3);}
+.partner-badge{
+  display:inline-block;margin-top:10px;
+  background:rgba(201,168,76,0.1);border:1px solid var(--border);
+  border-radius:20px;padding:3px 12px;
+  font-size:11px;font-weight:700;color:var(--gold-d);
+}
+
+/* ===== FEATURES GRID ===== */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;max-width:900px;margin:0 auto;}
+.feat-card{
+  background:var(--white);
+  border:1.5px solid var(--border-s);
+  border-radius:var(--r);padding:20px 14px;text-align:center;
+  box-shadow:var(--shadow-s);transition:all 0.3s;
+}
+.feat-card:hover{border-color:var(--gold);box-shadow:var(--shadow-g);transform:translateY(-3px);}
+.feat-icon{font-size:28px;margin-bottom:8px;}
+.feat-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.feat-desc{font-size:11px;color:var(--text3);line-height:1.4;}
+
+/* ===== SAFETY SECTION ===== */
+.safety-wrap{
+  max-width:700px;margin:0 auto;
+  background:linear-gradient(135deg,#0f1d5e,#1a2e8a);
+  border-radius:24px;padding:40px 28px;text-align:center;
+  border:1.5px solid rgba(201,168,76,0.3);
+  box-shadow:0 16px 48px rgba(26,46,138,0.2);
+}
+.safety-title{font-family:'Cairo',sans-serif;font-size:28px;font-weight:900;color:var(--gold-l);margin-bottom:8px;}
+.safety-sub{font-size:15px;color:rgba(255,255,255,0.75);margin-bottom:28px;line-height:1.5;}
+.safety-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:right;}
+@media(max-width:480px){.safety-list{grid-template-columns:1fr;}}
+.safety-item{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(201,168,76,0.2);
+  border-radius:var(--r-sm);padding:14px;
+  display:flex;align-items:center;gap:10px;
+  color:rgba(255,255,255,0.9);font-size:14px;
+}
+.safety-item-icon{font-size:22px;flex-shrink:0;}
+
+/* ===== 6 MONTHS SECTION ===== */
+.months-wrap{max-width:700px;margin:0 auto;text-align:center;}
+.months-timeline{display:flex;align-items:center;justify-content:center;gap:0;margin:32px 0;}
+.m-node{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.m-circle{
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-d));
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:900;color:#fff;
+  box-shadow:0 4px 14px rgba(201,168,76,0.3);
+}
+.m-label{font-size:11px;color:var(--text3);font-weight:700;white-space:nowrap;}
+.m-line{flex:1;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-d));min-width:20px;max-width:60px;}
+.months-reward{
+  background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.02));
+  border:1.5px solid var(--border);border-radius:var(--r);
+  padding:20px;margin-top:8px;
+}
+.reward-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+@media(min-width:480px){.reward-grid{grid-template-columns:repeat(4,1fr);}}
+.reward-item{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--r-sm);padding:14px 10px;text-align:center;
+  box-shadow:var(--shadow-s);
+}
+.reward-icon{font-size:24px;margin-bottom:6px;}
+.reward-title{font-size:12px;font-weight:700;color:var(--gold-d);}
+
+/* ===== CTA ===== */
+.cta-section{
+  background:linear-gradient(135deg,var(--gold-d) 0%,var(--gold) 50%,var(--gold-d) 100%);
+  padding:70px 20px;text-align:center;position:relative;z-index:1;
+}
+.cta-title{font-family:'Cairo',sans-serif;font-size:clamp(24px,5vw,38px);font-weight:900;color:#fff;margin-bottom:10px;}
+.cta-sub{font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:32px;}
+.cta-btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;}
+.cta-btn{
+  padding:15px 28px;border-radius:var(--r);
+  font-family:'Tajawal',sans-serif;font-size:16px;font-weight:700;
+  cursor:pointer;text-decoration:none;transition:all 0.25s;border:none;
+}
+.cta-white{background:#fff;color:var(--gold-d);box-shadow:0 4px 20px rgba(0,0,0,0.1);}
+.cta-white:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,0.15);}
+.cta-glass{background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.4);color:#fff;}
+.cta-glass:hover{background:rgba(255,255,255,0.25);}
+
+/* ===== FOOTER ===== */
+footer{
+  background:var(--blue-d);color:rgba(255,255,255,0.7);
+  padding:40px 20px 24px;text-align:center;position:relative;z-index:1;
+}
+.footer-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;}
+.footer-logo img{width:40px;filter:drop-shadow(0 2px 8px rgba(201,168,76,0.4));}
+.footer-brand{font-family:'Cairo',sans-serif;font-size:20px;font-weight:900;color:var(--gold-l);}
+.footer-links{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:20px;}
+.footer-link{color:rgba(255,255,255,0.5);text-decoration:none;font-size:13px;transition:color 0.2s;}
+.footer-link:hover{color:var(--gold-l);}
+.footer-copy{font-size:12px;color:rgba(255,255,255,0.3);}
+.footer-copy span{color:var(--gold);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* GOLD DIVIDER */
+.gold-div{
+  width:80px;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:0 auto 32px;
+}
+
+@media(max-width:480px){
+  .nav-links{display:none;}
+  .hero-btns .hero-btn{width:100%;justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <img src="logo.png" alt="الغفير">
+    <span class="nav-brand">الغفير</span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="#how">كيف يعمل؟</a>
+    <a class="nav-link" href="#why">ليه الغفير؟</a>
+    <a class="nav-link" href="#drivers">للسائقين</a>
+    <a class="nav-link" href="#partners">الشركاء</a>
+  </div>
+  <a class="nav-cta" href="client/signup.html">ابدأ دلوقتي</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <div class="hero-badge-dot"></div>
+    منظومة التنقل الآمن — المنصورة
+  </div>
+  <img src="logo.png" class="hero-logo" alt="الغفير">
+  <h1 class="hero-title">الغفير</h1>
+  <p class="hero-sub">
+    مش مجرد توك توك..
+    <b>منظومة أمان كاملة</b> بتربط العميل بسائق موثوق،
+    برحلة متتبعة، وحماية في كل لحظة.
+  </p>
+  <div class="hero-btns">
+    <a class="hero-btn hb-gold" href="client/signup.html">🧑 أنا عميل — ابدأ مجاناً</a>
+    <a class="hero-btn hb-glass" href="driver/signup.html">🛺 أنا سائق — سجل معنا</a>
+    <a class="hero-btn hb-silver" href="partners/signup.html">🔧 أنا شريك تجاري</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-num">٢٤/٧</div><div class="hstat-lbl">مراقبة مستمرة</div></div>
+    <div class="hstat"><div class="hstat-num">١٠٠٪</div><div class="hstat-lbl">سائقين معتمدين</div></div>
+    <div class="hstat"><div class="hstat-num">٠ جنيه</div><div class="hstat-lbl">تسجيل العميل</div></div>
+    <div class="hstat"><div class="hstat-num">QR</div><div class="hstat-lbl">نظام آمن</div></div>
+  </div>
+  <div class="scroll-hint">
+    <span>اكتشف أكتر</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" style="background:#fff;">
+  <div class="center reveal">
+    <div class="section-badge">⚡ خطوات بسيطة</div>
+    <h2 class="section-title">كيف تعمل <span>منظومة الغفير</span>؟</h2>
+    <p class="section-sub">من أول الطلب لحد الوصول — كل خطوة آمنة ومتابعة</p>
+    <div class="gold-div"></div>
+  </div>
+  <div class="how-wrap">
+    <div class="how-steps">
+      <div class="how-step reveal">
+        <div class="how-step-num">1</div>
+        <div class="how-step-icon">📱</div>
+        <div class="how-step-title">اطلب غفير</div>
+        <div class="how-step-desc">اضغط زر واحد — النظام يجيب أقرب سائق متاح ومعتمد</div>
+        <div class="how-connector"></div>
+      </div>
+      <div class="how-step reveal">
+        <div class="how-step-num">2</div>
+        <div class="how-step-icon">🛺</div>
+        <div class="how-step-title">السائق يوافق</div>
+        <div class="how-step-desc">السائق يقبل الطلب — بياناته تظهر عندك فوراً مع تقييمه وصورته</div>
+        <div class="how-connector"></div>
+      </div>
+      <div class="how-step reveal">
+        <div class="how-step-num">3</div>
+        <div class="how-step-icon">📱</div>
+        <div class="how-step-title">مسح QR</div>
+        <div class="how-step-desc">السائق يمسح QR رحلتك — الرحلة تبدأ رسمياً بكود OTP آمن</div>
+        <div class="how-connector"></div>
+      </div>
+      <div class="how-step reveal">
+        <div class="how-step-num">4</div>
+        <div class="how-step-icon">🗺️</div>
+        <div class="how-step-title">تتبع المعالم</div>
+        <div class="how-step-desc">رحلتك بتتتبع عبر معالم ثابتة — مش بيحتاج GPS مستمر</div>
+        <div class="how-connector"></div>
+      </div>
+      <div class="how-step reveal">
+        <div class="how-step-num">5</div>
+        <div class="how-step-icon">⭐</div>
+        <div class="how-step-title">وصل بسلام</div>
+        <div class="how-step-desc">قيّم رحلتك — وولي الأمر يتابع كل خطوة في الوقت الحقيقي</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY GHAFEER -->
+<section id="why">
+  <div class="center reveal">
+    <div class="section-badge">💎 مزايا حصرية</div>
+    <h2 class="section-title">ليه <span>الغفير</span> مختلف؟</h2>
+    <p class="section-sub">مش تطبيق توصيل عادي — ده نظام أمان متكامل</p>
+    <div class="gold-div"></div>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <div class="why-icon">🔐</div>
+      <div class="why-title">QR + OTP لكل رحلة</div>
+      <div class="why-desc">كل رحلة بكود تحقق فريد — مفيش رحلة تبدأ بدون تأكيد الطرفين</div>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">🗺️</div>
+      <div class="why-title">تتبع بالمعالم</div>
+      <div class="why-desc">مسار محدد بنقاط شهيرة — الكل عارف الرحلة فين في أي لحظة</div>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">👨‍👩‍👧</div>
+      <div class="why-title">نظام العائلة</div>
+      <div class="why-desc">ولي الأمر يتابع أولاده ويشوف كل رحلة live من موبايله</div>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">🚨</div>
+      <div class="why-title">SOS فوري</div>
+      <div class="why-desc">زر طوارئ يبعت موقعك للإدارة والعائلة في ثانية واحدة</div>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">🎙️</div>
+      <div class="why-title">واكي توكي</div>
+      <div class="why-desc">تواصل مباشر بين العميل والسائق والإدارة — زي اللاسلكي بالظبط</div>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">✅</div>
+      <div class="why-title">سائقين معتمدين فقط</div>
+      <div class="why-desc">كل سائق بيعدي على فحص أمني ومراجعة مستندات قبل الانضمام</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR DRIVERS / CLIENTS -->
+<section id="drivers" style="background:#fff;">
+  <div class="center reveal">
+    <div class="section-badge">🤝 للجميع</div>
+    <h2 class="section-title">الغفير <span>لك</span> أنت</h2>
+    <p class="section-sub">سواء كنت عميل بيدور على أمان أو سائق بيدور على دخل ثابت</p>
+    <div class="gold-div"></div>
+  </div>
+  <div class="audience-grid" style="max-width:900px;margin:0 auto;">
+    <div class="audience-card aud-driver reveal">
+      <div class="aud-icon">🛺</div>
+      <div class="aud-title">للسائق</div>
+      <div class="aud-sub">انضم لمنظومة الغفير وابدأ دخل ثابت ومستقر</div>
+      <ul class="aud-list">
+        <li>طلبات رحلات مستمرة</li>
+        <li>دخل يومي مضمون</li>
+        <li>نظام عداد ٦ شهور بمكافآت</li>
+        <li>دعم في حالات الأعطال</li>
+        <li>خصومات على ورش الشركاء</li>
+        <li>تدريب وتأهيل مجاني</li>
+      </ul>
+      <a class="aud-btn" href="driver/signup.html">🛺 سجل كسائق دلوقتي</a>
+    </div>
+    <div class="audience-card aud-client reveal">
+      <div class="aud-icon">🧑</div>
+      <div class="aud-title">للعميل</div>
+      <div class="aud-sub">اركب وأنت مطمئن — كل تفصيلة متابعة</div>
+      <ul class="aud-list">
+        <li>سائق معتمد ومعروف</li>
+        <li>QR لبدء الرحلة بأمان</li>
+        <li>تتبع المسار بالمعالم</li>
+        <li>ولي الأمر يتابع live</li>
+        <li>زر SOS للطوارئ</li>
+        <li>تسجيل مجاني 100%</li>
+      </ul>
+      <a class="aud-btn" href="client/signup.html">🧑 سجل كعميل مجاناً</a>
+    </div>
+  </div>
+
+  <!-- 6 MONTHS SYSTEM -->
+  <div class="months-wrap reveal" style="margin-top:48px;">
+    <div class="section-badge" style="display:inline-flex;">🏆 ميزة حصرية</div>
+    <h3 style="font-family:'Cairo',sans-serif;font-size:22px;font-weight:900;color:var(--text);margin:10px 0 6px;">نظام عداد الـ ١٨٠ يوم</h3>
+    <p style="font-size:14px;color:var(--text3);margin-bottom:24px;">اشتغل بانتظام ٦ شهور واحصل على امتيازات حصرية</p>
+    <div class="months-timeline">
+      <div class="m-node"><div class="m-circle">يوم<br>١</div><div class="m-label">البداية</div></div>
+      <div class="m-line"></div>
+      <div class="m-node"><div class="m-circle">٣٠</div><div class="m-label">شهر ١</div></div>
+      <div class="m-line"></div>
+      <div class="m-node"><div class="m-circle">٩٠</div><div class="m-label">٣ شهور</div></div>
+      <div class="m-line"></div>
+      <div class="m-node"><div class="m-circle">١٨٠</div><div class="m-label">🏆 مكافأة</div></div>
+    </div>
+    <div class="months-reward">
+      <div class="reward-grid">
+        <div class="reward-item"><div class="reward-icon">⚡</div><div class="reward-title">أولوية في الطلبات</div></div>
+        <div class="reward-item"><div class="reward-icon">🔧</div><div class="reward-title">تعويض أعطال</div></div>
+        <div class="reward-item"><div class="reward-icon">💰</div><div class="reward-title">قرض صيانة</div></div>
+        <div class="reward-item"><div class="reward-icon">🏅</div><div class="reward-title">شارة سائق مميز</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAFETY SECTION -->
+<section style="padding:80px 20px;">
+  <div class="safety-wrap reveal">
+    <div style="font-size:48px;margin-bottom:14px;">🛡️</div>
+    <div class="safety-title">منظومة الأمان الكاملة</div>
+    <div class="safety-sub">كل ميزة فيها اتصممت عشان تحس بالأمان التام في كل رحلة</div>
+    <div class="safety-list">
+      <div class="safety-item"><div class="safety-item-icon">🔐</div><span>QR + OTP آمن لكل رحلة</span></div>
+      <div class="safety-item"><div class="safety-item-icon">📍</div><span>تتبع المسار بالمعالم</span></div>
+      <div class="safety-item"><div class="safety-item-icon">🚨</div><span>زر SOS طوارئ فوري</span></div>
+      <div class="safety-item"><div class="safety-item-icon">👨‍👩‍👧</div><span>متابعة ولي الأمر live</span></div>
+      <div class="safety-item"><div class="safety-item-icon">🎙️</div><span>واكي توكي مع السائق</span></div>
+      <div class="safety-item"><div class="safety-item-icon">✅</div><span>سائقين معتمدين فقط</span></div>
+      <div class="safety-item"><div class="safety-item-icon">⭐</div><span>نظام تقييم شفاف</span></div>
+      <div class="safety-item"><div class="safety-item-icon">📊</div><span>إشراف إداري ٢٤/٧</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<section id="partners" style="background:#fff;">
+  <div class="center reveal">
+    <div class="section-badge">🤝 شراكات تجارية</div>
+    <h2 class="section-title">انضم كـ <span>شريك</span></h2>
+    <p class="section-sub">سواء ورشة أو محل قطع غيار أو شركة — الغفير يوصلك بآلاف السائقين</p>
+    <div class="gold-div"></div>
+  </div>
+  <div class="partners-grid">
+    <a class="partner-card reveal" href="partners/signup.html?type=workshop">
+      <div class="partner-icon">🔧</div>
+      <div class="partner-title">ورشة تصليح</div>
+      <div class="partner-desc">استقبل سائقي الغفير للصيانة والإصلاح</div>
+      <div class="partner-badge">خصومات تحددها الإدارة</div>
+    </a>
+    <a class="partner-card reveal" href="partners/signup.html?type=parts">
+      <div class="partner-icon">⚙️</div>
+      <div class="partner-title">محل قطع غيار</div>
+      <div class="partner-desc">بيع قطع الغيار للسائقين بأسعار مخصوصة</div>
+      <div class="partner-badge">نسبة تحددها الإدارة</div>
+    </a>
+    <a class="partner-card reveal" href="partners/signup.html?type=company">
+      <div class="partner-icon">🏢</div>
+      <div class="partner-title">شركة</div>
+      <div class="partner-desc">احجز رحلات لموظفيك بأسعار مخصوصة</div>
+      <div class="partner-badge">باقات مؤسسية</div>
+    </a>
+  </div>
+</section>
+
+<!-- ALL FEATURES -->
+<section>
+  <div class="center reveal">
+    <div class="section-badge">🚀 كل المزايا</div>
+    <h2 class="section-title">منظومة <span>متكاملة</span></h2>
+    <div class="gold-div"></div>
+  </div>
+  <div class="features-grid" style="max-width:900px;margin:0 auto;">
+    <div class="feat-card reveal"><div class="feat-icon">📱</div><div class="feat-title">QR تشغيل</div><div class="feat-desc">بداية آمنة بكود فريد</div></div>
+    <div class="feat-card reveal"><div class="feat-icon">🗺️</div><div class="feat-title">تتبع المعالم</div><div class="feat-desc">مسار واضح بدون GPS ثقيل</div></div>
+    <div class="feat-card reveal"><div class="feat-icon">🎙️</div><div class="feat-title">واكي توكي</div><div class="feat-desc">تواصل PTT فوري</div></div>
+    <div class="feat-card reveal"><div class="feat-icon">👨‍👩‍👧</div><div class="feat-title">نظام العائلة</div><div class="feat-desc">متابعة ولي الأمر</div></div>
+    <div class="feat-card reveal"><div class="feat-icon">🚨</div><div class="feat-title">SOS طوارئ</div><div class="feat-desc">تنبيه فوري للإدارة</div></div>
+    <div class="feat-card reveal"><div class="feat-icon">⭐</div><div class="feat-title">تقييم شفاف</div><div class="feat-desc">كل رحلة بتقييم موثوق</div></div>
+    <div class="feat-card reveal"><div class="feat-icon">💰</div><div class="feat-title">محفظة إلكترونية</div><div class="feat-desc">رصيد ومدفوعات آمنة</div></div>
+    <div class="feat-card reveal"><div class="feat-icon">🏆</div><div class="feat-title">عداد ٦ شهور</div><div class="feat-desc">مكافآت للسائقين الملتزمين</div></div>
+    <div class="feat-card reveal"><div class="feat-icon">🔧</div><div class="feat-title">شبكة الشركاء</div><div class="feat-desc">ورش ومحلات معتمدة</div></div>
+    <div class="feat-card reveal"><div class="feat-icon">📊</div><div class="feat-title">لوحة تحكم</div><div class="feat-desc">إدارة كاملة للإدارة</div></div>
+    <div class="feat-card reveal"><div class="feat-icon">📞</div><div class="feat-title">VOIP متكامل</div><div class="feat-desc">Elastix/Issabel</div></div>
+    <div class="feat-card reveal"><div class="feat-icon">🛡️</div><div class="feat-title">أمان كامل</div><div class="feat-desc">نظام صلاحيات متعدد المستويات</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="reveal">
+    <div class="cta-title">مستنى إيه؟ ابدأ مع الغفير دلوقتي!</div>
+    <div class="cta-sub">التسجيل مجاني — انضم لمنظومة الأمان في ثواني</div>
+    <div class="cta-btns">
+      <a class="cta-btn cta-white" href="client/signup.html">🧑 تسجيل عميل مجاناً</a>
+      <a class="cta-btn cta-glass" href="driver/signup.html">🛺 سجل كسائق</a>
+      <a class="cta-btn cta-glass" href="partners/signup.html">🔧 انضم كشريك</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <img src="logo.png" alt="">
+    <span class="footer-brand">الغفير</span>
+  </div>
+  <div class="footer-links">
+    <a class="footer-link" href="client/signup.html">للعملاء</a>
+    <a class="footer-link" href="driver/signup.html">للسائقين</a>
+    <a class="footer-link" href="partners/signup.html">الشركاء</a>
+    <a class="footer-link" href="admin/index.html">الإدارة</a>
+    <a class="footer-link" href="#">سياسة الخصوصية</a>
+    <a class="footer-link" href="#">الشروط والأحكام</a>
+  </div>
+  <div class="footer-copy">جميع الحقوق محفوظة © ٢٠٢٦ <span>الغفير</span> — أمان وراحة نفسية</div>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if(target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Nav shrink on scroll
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('.nav');
+  if(window.scrollY > 50) nav.style.padding = '8px 20px';
+  else nav.style.padding = '12px 20px';
+});
+</script>
+</body>
+</html>

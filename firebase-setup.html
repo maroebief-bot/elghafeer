@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>الغفير — إعداد Firebase</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Tajawal',sans-serif;background:#f8f9fb;color:#1a1a2e;direction:rtl;}
+.hero{background:linear-gradient(135deg,#0f1d5e 0%,#1a2e8a 60%,#c9a84c 100%);padding:32px 20px;text-align:center;color:#fff;}
+.hero img{width:70px;filter:drop-shadow(0 4px 12px rgba(201,168,76,0.5));margin-bottom:12px;}
+.hero h1{font-size:24px;font-weight:900;color:#e8c96a;}
+.hero p{font-size:14px;opacity:0.8;margin-top:6px;}
+.container{max-width:680px;margin:0 auto;padding:20px 16px 40px;}
+.step-card{background:#fff;border-radius:16px;border:1.5px solid #e2e8f0;box-shadow:0 2px 12px rgba(26,46,138,0.07);margin-bottom:20px;overflow:hidden;}
+.step-hdr{background:linear-gradient(135deg,#c9a84c,#a07830);padding:14px 18px;display:flex;align-items:center;gap:10px;}
+.step-num{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.25);color:#fff;font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-title{font-size:16px;font-weight:700;color:#fff;}
+.step-body{padding:18px;}
+.step-desc{font-size:14px;color:#4a5568;line-height:1.7;margin-bottom:14px;}
+.step-desc b{color:#c9a84c;font-weight:700;}
+.code-block{position:relative;background:#0f1d5e;border-radius:12px;padding:16px;overflow:auto;max-height:320px;}
+.code-block pre{color:#e8c96a;font-size:13px;font-family:monospace;line-height:1.6;white-space:pre-wrap;word-break:break-all;}
+.copy-btn{position:absolute;top:10px;left:10px;background:rgba(201,168,76,0.2);border:1px solid rgba(201,168,76,0.4);color:#e8c96a;padding:6px 12px;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;transition:all 0.2s;}
+.copy-btn:hover{background:rgba(201,168,76,0.4);}
+.copy-btn.copied{background:rgba(34,197,94,0.3);border-color:rgba(34,197,94,0.5);color:#22c55e;}
+.nav-list{list-style:none;counter-reset:nav;}
+.nav-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f0f2f5;font-size:14px;color:#4a5568;line-height:1.5;}
+.nav-list li:last-child{border:none;}
+.nav-list li::before{content:attr(data-n);min-width:22px;height:22px;border-radius:50%;background:#e8c96a;color:#a07830;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.warn{background:#fef3c7;border:1px solid #fcd34d;border-radius:10px;padding:12px;font-size:13px;color:#92400e;margin-top:10px;display:flex;gap:8px;align-items:flex-start;}
+.tip{background:#dcfce7;border:1px solid #86efac;border-radius:10px;padding:12px;font-size:13px;color:#166534;margin-top:10px;display:flex;gap:8px;}
+.collection-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+.collection-table th{background:#0f1d5e;color:#e8c96a;padding:8px 12px;text-align:right;font-weight:700;}
+.collection-table td{padding:8px 12px;border-bottom:1px solid #f0f2f5;color:#4a5568;}
+.collection-table tr:last-child td{border:none;}
+.collection-table tr:hover td{background:#f8f9fb;}
+.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;}
+.tag-auto{background:#eff6ff;color:#1d4ed8;}
+.tag-manual{background:#fef3c7;color:#92400e;}
+.done-badge{display:inline-flex;align-items:center;gap:4px;background:#dcfce7;color:#166534;border:1px solid #86efac;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <img src="logo.png" alt="الغفير">
+  <h1>إعداد Firebase — الغفير</h1>
+  <p>اتبع الخطوات بالترتيب — كل حاجة جاهزة للنسخ واللصق</p>
+</div>
+<div class="container">
+
+<!-- STEP 1 -->
+<div class="step-card">
+  <div class="step-hdr"><div class="step-num">1</div><div class="step-title">إنشاء مشروع Firebase</div></div>
+  <div class="step-body">
+    <div class="step-desc">روح <b>console.firebase.google.com</b> واعمل الخطوات دي:</div>
+    <ul class="nav-list">
+      <li data-n="1">اضغط <b>Add Project</b> → اكتب اسم المشروع: <b>elghafeer</b></li>
+      <li data-n="2">Google Analytics → اضغط Continue (Enable أو Disable مش مهم)</li>
+      <li data-n="3">اضغط <b>Create Project</b> → انتظر التحميل</li>
+      <li data-n="4">من الـ sidebar اضغط على <b>Project Settings ⚙️</b></li>
+      <li data-n="5">اختار <b>General</b> → تحت "Your apps" اضغط <b>&lt;/&gt; Web</b></li>
+      <li data-n="6">اكتب اسم التطبيق: <b>elghafeer-web</b> → Register app</li>
+      <li data-n="7">انسخ الـ <b>firebaseConfig</b> وحطها في ملف <b>firebase-config.js</b></li>
+    </ul>
+  </div>
+</div>
+
+<!-- STEP 2: Authentication -->
+<div class="step-card">
+  <div class="step-hdr"><div class="step-num">2</div><div class="step-title">تفعيل Authentication (OTP)</div></div>
+  <div class="step-body">
+    <ul class="nav-list">
+      <li data-n="1">من الـ sidebar: <b>Build → Authentication → Get Started</b></li>
+      <li data-n="2">اضغط <b>Sign-in method</b></li>
+      <li data-n="3">اختار <b>Phone</b> → اضغط Enable → Save</li>
+      <li data-n="4">اضغط <b>Email/Password</b> → Enable → Save (للأدمن)</li>
+    </ul>
+    <div class="tip">✅ OTP هيشتغل على أرقام مصرية (+20) بعد التفعيل مباشرة</div>
+    <div class="warn">⚠️ للتجربة على أجهزة حقيقية محتاج تضيف رقمك في قسم "Phone numbers for testing" أو تستخدم رقم فعلي</div>
+  </div>
+</div>
+
+<!-- STEP 3: Firestore -->
+<div class="step-card">
+  <div class="step-hdr"><div class="step-num">3</div><div class="step-title">إنشاء Firestore Database</div></div>
+  <div class="step-body">
+    <ul class="nav-list">
+      <li data-n="1">من الـ sidebar: <b>Build → Firestore Database → Create Database</b></li>
+      <li data-n="2">اختار <b>Start in test mode</b> → Next</li>
+      <li data-n="3">اختار <b>eur3 (Europe)</b> أو <b>me-central1</b> (الأقرب) → Enable</li>
+    </ul>
+    <div style="font-size:14px;font-weight:700;color:#1a2e8a;margin:14px 0 8px;">📦 Collections اللي هتتعمل تلقائياً بالنظام:</div>
+    <table class="collection-table">
+      <thead><tr><th>Collection</th><th>الوصف</th><th>إنشاء</th></tr></thead>
+      <tbody>
+        <tr><td><b>admins</b></td><td>الأدمن والمشرفين والصلاحيات</td><td><span class="tag tag-manual">يدوي</span></td></tr>
+        <tr><td><b>drivers</b></td><td>بيانات السائقين</td><td><span class="tag tag-auto">تلقائي</span></td></tr>
+        <tr><td><b>clients</b></td><td>بيانات العملاء</td><td><span class="tag tag-auto">تلقائي</span></td></tr>
+        <tr><td><b>rides</b></td><td>الرحلات كاملة</td><td><span class="tag tag-auto">تلقائي</span></td></tr>
+        <tr><td><b>sos</b></td><td>حالات الطوارئ</td><td><span class="tag tag-auto">تلقائي</span></td></tr>
+        <tr><td><b>families</b></td><td>أفراد العائلة</td><td><span class="tag tag-auto">تلقائي</span></td></tr>
+        <tr><td><b>partners</b></td><td>الشركاء (ورش + محلات)</td><td><span class="tag tag-auto">تلقائي</span></td></tr>
+        <tr><td><b>payments</b></td><td>المدفوعات والاشتراكات</td><td><span class="tag tag-auto">تلقائي</span></td></tr>
+        <tr><td><b>erp_employees</b></td><td>موظفي الشركة</td><td><span class="tag tag-auto">تلقائي</span></td></tr>
+        <tr><td><b>notifications</b></td><td>الإشعارات</td><td><span class="tag tag-auto">تلقائي</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- STEP 4: First Admin -->
+<div class="step-card">
+  <div class="step-hdr"><div class="step-num">4</div><div class="step-title">إنشاء أول أدمن (يدوي)</div></div>
+  <div class="step-body">
+    <div class="step-desc">روح <b>Firestore Database</b> → اضغط <b>+ Start collection</b></div>
+    <ul class="nav-list">
+      <li data-n="1">Collection ID: اكتب <b>admins</b> → Next</li>
+      <li data-n="2">Document ID: اضغط <b>Auto-ID</b></li>
+      <li data-n="3">أضف الـ fields التالية:</li>
+    </ul>
+    <div class="code-block" style="margin-top:10px;">
+      <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+      <pre>username: "admin"
+password: "ghafeer@2026"
+role: "superadmin"
+name: "الإدارة المركزية"
+phone: "01xxxxxxxxx"
+region: "all"
+isActive: true
+createdAt: (اضغط timestamp)</pre>
+    </div>
+    <div class="warn" style="margin-top:12px;">⚠️ غيّر كلمة المرور بعد أول دخول مباشرة من لوحة التحكم</div>
+  </div>
+</div>
+
+<!-- STEP 5: Firestore Rules -->
+<div class="step-card">
+  <div class="step-hdr"><div class="step-num">5</div><div class="step-title">Firestore Security Rules</div></div>
+  <div class="step-body">
+    <div class="step-desc">روح <b>Firestore Database → Rules</b> → امسح كل حاجة موجودة والصق ده:</div>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+      <pre>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuth() {
+      return request.auth != null;
+    }
+    function getAdmin() {
+      return get(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+    function getRole() {
+      return getAdmin().data.role;
+    }
+    function isSuperAdmin() {
+      return isAuth() && getRole() == 'superadmin';
+    }
+    function isRegionManager() {
+      return isAuth() && getRole() in ['superadmin', 'region_manager'];
+    }
+    function isSupervisor() {
+      return isAuth() && getRole() in ['superadmin', 'region_manager', 'supervisor'];
+    }
+    function isStaff() {
+      return isAuth() && getRole() in ['superadmin', 'region_manager', 'supervisor', 'street_monitor'];
+    }
+    function isOwner(uid) {
+      return isAuth() && request.auth.uid == uid;
+    }
+
+    // ADMINS
+    match /admins/{uid} {
+      allow read: if isStaff();
+      allow create, update: if isSuperAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    // DRIVERS
+    match /drivers/{uid} {
+      allow read: if isAuth();
+      allow create: if isAuth() && isOwner(uid);
+      allow update: if isOwner(uid) || isSupervisor();
+      allow delete: if isSuperAdmin();
+    }
+
+    // CLIENTS
+    match /clients/{uid} {
+      allow read: if isOwner(uid) || isSupervisor();
+      allow create: if isAuth() && isOwner(uid);
+      allow update: if isOwner(uid) || isRegionManager();
+      allow delete: if isSuperAdmin();
+    }
+
+    // RIDES
+    match /rides/{rideId} {
+      allow read: if isAuth();
+      allow create: if isAuth();
+      allow update: if isAuth();
+      allow delete: if isSuperAdmin();
+    }
+
+    // SOS
+    match /sos/{id} {
+      allow read: if isSupervisor();
+      allow create: if isAuth();
+      allow update: if isSupervisor();
+      allow delete: if isRegionManager();
+    }
+
+    // FAMILIES
+    match /families/{id} {
+      allow read, write: if isAuth();
+    }
+
+    // PARTNERS (workshops, parts shops, companies)
+    match /partners/{id} {
+      allow read: if isAuth();
+      allow create: if isAuth();
+      allow update: if isAuth() && (
+        resource.data.ownerId == request.auth.uid || isSupervisor()
+      );
+      allow delete: if isRegionManager();
+    }
+
+    // PAYMENTS
+    match /payments/{id} {
+      allow read: if isAuth() && (
+        resource.data.userId == request.auth.uid || isSupervisor()
+      );
+      allow create: if isAuth();
+      allow update: if isRegionManager();
+      allow delete: if isSuperAdmin();
+    }
+
+    // ERP EMPLOYEES
+    match /erp_employees/{id} {
+      allow read: if isRegionManager();
+      allow write: if isSuperAdmin();
+    }
+
+    // ERP TRANSACTIONS
+    match /erp_transactions/{id} {
+      allow read: if isRegionManager();
+      allow write: if isRegionManager();
+    }
+
+    // NOTIFICATIONS
+    match /notifications/{id} {
+      allow read: if isAuth() && (
+        resource.data.targetId == request.auth.uid || isSupervisor()
+      );
+      allow create: if isSupervisor();
+      allow update: if isAuth();
+      allow delete: if isSupervisor();
+    }
+
+    // REGIONS
+    match /regions/{id} {
+      allow read: if isAuth();
+      allow write: if isSuperAdmin();
+    }
+
+    // DISCOUNT CONFIGS (for partners)
+    match /discount_configs/{id} {
+      allow read: if isAuth();
+      allow write: if isSuperAdmin();
+    }
+
+    // DRIVER PAYMENT CONFIG
+    match /driver_payment_configs/{uid} {
+      allow read: if isOwner(uid) || isSupervisor();
+      allow write: if isSuperAdmin();
+    }
+  }
+}</pre>
+    </div>
+    <div class="tip" style="margin-top:10px;">✅ بعد اللصق اضغط <b>Publish</b> — الـ Rules هتتفعل فوراً</div>
+  </div>
+</div>
+
+<!-- STEP 6: Storage Rules -->
+<div class="step-card">
+  <div class="step-hdr"><div class="step-num">6</div><div class="step-title">Storage Rules</div></div>
+  <div class="step-body">
+    <div class="step-desc">روح <b>Storage → Rules</b> والصق ده:</div>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+      <pre>rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /drivers/{uid}/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+    match /partners/{uid}/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+    match /sos_recordings/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+  }
+}</pre>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 7: Firebase Config -->
+<div class="step-card">
+  <div class="step-hdr"><div class="step-num">7</div><div class="step-title">ملف firebase-config.js الجاهز</div></div>
+  <div class="step-body">
+    <div class="step-desc">ده ملف الـ config اللي تحط فيه بياناتك — محتاج تغير القيم بس:</div>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+      <pre>// firebase-config.js — الغفير
+// ⚠️ غيّر القيم دي بالقيم من Firebase Console
+
+export const firebaseConfig = {
+  apiKey:            "AIzaSyBwc1mp1NRakXfeSkDy4_ntHu38K5L1hIg",
+  authDomain:        "elghafeer-28543.firebaseapp.com",
+  projectId:         "elghafeer-28543",
+  storageBucket:     "elghafeer-28543.firebasestorage.app",
+  messagingSenderId: "862588981889",
+  appId:             "1:862588981889:web:36f5cfc3d1e9bcd8289f90",
+  measurementId:     "G-W19T89CCX1"
+};
+
+// Role definitions
+export const ROLES = {
+  SUPERADMIN:     'superadmin',
+  REGION_MANAGER: 'region_manager',
+  SUPERVISOR:     'supervisor',
+  STREET_MONITOR: 'street_monitor',
+  DRIVER:         'driver',
+  CLIENT:         'client',
+  FAMILY:         'family',
+  WORKSHOP:       'workshop',
+  PARTS_SHOP:     'parts_shop',
+  COMPANY:        'company'
+};
+
+// Payment systems
+export const PAYMENT_TYPES = {
+  FIXED:      'fixed',   // مبلغ ثابت يومي
+  PERCENTAGE: 'percentage' // نسبة من كل رحلة
+};</pre>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 8: Vercel -->
+<div class="step-card">
+  <div class="step-hdr"><div class="step-num">8</div><div class="step-title">الرفع على Vercel</div></div>
+  <div class="step-body">
+    <ul class="nav-list">
+      <li data-n="1">روح <b>github.com</b> → الـ repository بتاعك <b>elghafeer</b></li>
+      <li data-n="2">اضغط <b>Add file → Upload files</b></li>
+      <li data-n="3">ارفع <b>كل الملفات</b> (index.html, style.css, logo.png, وكل المجلدات)</li>
+      <li data-n="4">اضغط <b>Commit changes</b></li>
+      <li data-n="5">روح <b>vercel.com</b> → المشروع هيعمل Deploy تلقائي ✅</li>
+      <li data-n="6">رابط موقعك هيبقى: <b>elghafeer.vercel.app</b></li>
+    </ul>
+    <div class="tip">✅ كل مرة ترفع ملفات على GitHub هيتعمل Deploy تلقائي على Vercel</div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div style="background:linear-gradient(135deg,#0f1d5e,#1a2e8a);border-radius:16px;padding:20px;text-align:center;color:#fff;margin-top:8px;">
+  <div style="font-size:20px;font-weight:900;color:#e8c96a;margin-bottom:12px;">✅ ملخص ما تم</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:right;">
+    <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px;font-size:13px;">✅ Firebase Project</div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px;font-size:13px;">✅ Authentication OTP</div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px;font-size:13px;">✅ Firestore Rules</div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px;font-size:13px;">✅ Storage Rules</div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px;font-size:13px;">✅ أول أدمن</div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px;font-size:13px;">✅ Config جاهز</div>
+  </div>
+</div>
+
+</div>
+<script>
+function copyCode(btn){
+  const pre=btn.nextElementSibling;
+  navigator.clipboard.writeText(pre.textContent).then(()=>{
+    btn.textContent='✅ تم النسخ!';
+    btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='نسخ';btn.classList.remove('copied');},2000);
+  });
+}
+</script>
+</body>
+</html>
